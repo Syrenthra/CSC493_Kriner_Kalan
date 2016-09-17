@@ -10,6 +10,12 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.MathUtils;
 
+/**
+ * @author Kalan Kriner
+ * 
+ * WorldController handles the running of the game and handles
+ * calls to many other classes
+ */
 public class WorldController extends InputAdapter
 {
 	public Sprite[] testSprites;
@@ -17,11 +23,17 @@ public class WorldController extends InputAdapter
 	public CameraHelper cameraHelper;
 	private static final String TAG=WorldController.class.getName();
 	
+	/**
+	 * Constructor that just calls the initialize method
+	 */
 	public WorldController() 
 	{
 		init();
 	}
 	
+	/**
+	 * Creates a thread for the game, the camera and makes the test sprites
+	 */
 	private void init() 
 	{
 		Gdx.input.setInputProcessor(this);
@@ -29,6 +41,10 @@ public class WorldController extends InputAdapter
 		initTestObjects();
 	}
 	
+	/**
+	 * Creates and array of Sprites that are made of the texture from
+	 * Procedural Pixmap and then places them randomly in the game world
+	 */
 	private void initTestObjects()
 	{
 		// Create new array for 5 sprites
@@ -58,6 +74,12 @@ public class WorldController extends InputAdapter
 		selectedSprite=0;
 	}
 	
+	/**
+	 * Creates the image the sprites will use which is a square with an X through it
+	 * @param width of the square
+	 * @param height of the square
+	 * @return the Pixmap of the image that will be made into a texture
+	 */
 	private Pixmap createProceduralPixmap(int width, int height)
 	{
 		Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
@@ -74,6 +96,10 @@ public class WorldController extends InputAdapter
 		return pixmap;
 	}
 	
+	/**
+	 * Updates different classes with delta time
+	 * @param deltaTime the time between updates
+	 */
 	public void update (float deltaTime) 
 	{
 		handleDebugInput(deltaTime);
@@ -81,6 +107,10 @@ public class WorldController extends InputAdapter
 		cameraHelper.update(deltaTime);
 	}
 
+	/**
+	 * Handles key inputs to control the camera, zooming, and sprite
+	 * @param deltaTime time since the last update
+	 */
 	private void handleDebugInput(float deltaTime) 
 	{
 		if(Gdx.app.getType() != ApplicationType.Desktop) return;
@@ -111,6 +141,11 @@ public class WorldController extends InputAdapter
 		if(Gdx.input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
 		}
 
+	/**
+	 * Moves the camera from the previous positon to the next one
+	 * @param x amount moved in X direction
+	 * @param y amount moved in Y direction
+	 */
 	private void moveCamera(float x, float y) 
 	{
 		x+=cameraHelper.getPosition().x;
@@ -118,14 +153,23 @@ public class WorldController extends InputAdapter
 		cameraHelper.setPosition(x, y);
 	}
 
+	/**
+	 * Moves the selected sprite to a new location
+	 * @param x amount moved in X direction
+	 * @param y amount moved in Y direction
+	 */
 	private void moveSelectedSprite(float x, float y) 
 	{
 		testSprites[selectedSprite].translate(x,y);
 	}
 
+	/**
+	 * When an update is called, the sprites are rotated
+	 * @param deltaTime time since last update to change rotation
+	 */
 	private void updateTestObjects(float deltaTime) 
 	{
-		// Get current rotation frm the selected sprite
+		// Get current rotation from the selected sprite
 		float rotation = testSprites[selectedSprite].getRotation();
 		//Rotate sprite by 90 degrees per second
 		rotation +=90*deltaTime;
@@ -135,6 +179,9 @@ public class WorldController extends InputAdapter
 		testSprites[selectedSprite].setRotation(rotation);
 	}
 	
+	/**
+	 * Handles different commands and actions for different keys
+	 */
 	@Override
 	public boolean keyUp(int keycode)
 	{

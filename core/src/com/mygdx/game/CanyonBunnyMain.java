@@ -7,6 +7,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
 
+/**
+ * @author Kalan Kriner
+ * 
+ * Does initializations of the game by creating the renderer and
+ * controller and sets the main window up
+ */
 public class CanyonBunnyMain implements ApplicationListener
 {
 
@@ -16,7 +22,11 @@ public class CanyonBunnyMain implements ApplicationListener
 	private WorldRenderer worldRenderer;
 	private boolean paused;
 	
-	@Override public void create() 
+	/**
+	 * Creates the controller and renderer and sets the level of the debugger
+	 */
+	@Override 
+	public void create() 
 	{
 		// Set Libgdx log level to DEBUG
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
@@ -27,7 +37,11 @@ public class CanyonBunnyMain implements ApplicationListener
 		paused=false;
 	}
 	
-	@Override public void render() 
+	/**
+	 * Sets the background of the window and updates the controller
+	 */
+	@Override 
+	public void render() 
 	{
 		// Do not update while paused
 		if(!paused)
@@ -44,22 +58,38 @@ public class CanyonBunnyMain implements ApplicationListener
 		worldRenderer.render();
 	}
 	
-	@Override public void resize(int width, int height) 
+
+	/**
+	 * Tells the renderer what the new height and width for the images. 
+	 */
+	@Override 
+	public void resize(int width, int height) 
 	{
 		worldRenderer.resize(width, height);
 	}
-	
-	@Override public void pause() 
+	/**
+	 * Sets the game to a paused state
+	 */
+	@Override 
+	public void pause() 
 	{
 		paused=true;
 	}
 	
-	@Override public void resume() 
+	/**
+	 * Resumes the game from paused
+	 */
+	@Override 
+	public void resume() 
 	{
 		paused = false;
 	}
 	
-	@Override public void dispose() 
+	/**
+	 * Disposes the rendered items
+	 */
+	@Override 
+	public void dispose() 
 	{
 		worldRenderer.dispose();
 	}
