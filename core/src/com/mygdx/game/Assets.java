@@ -82,7 +82,11 @@ public class Assets implements Disposable, AssetErrorListener
     {
         Gdx.app.error(TAG,"Couldn't load asset '" + asset.fileName + " ' ", (Exception) throwable);
     }
-    
+    /**
+     * Bunny asset class for storing of the bunny head after lookup
+     * 
+     * White denotes spawn point on level map
+     */
     public class AssetBunny
     {
         public final AtlasRegion head;
@@ -92,6 +96,11 @@ public class Assets implements Disposable, AssetErrorListener
         }
     }
     
+    /**
+     * Rock asset class for storing of the ground pieces after lookup
+     * 
+     * Green denotes ground block on level map
+     */
     public class AssetRock
     {
         public final AtlasRegion edge;
@@ -103,6 +112,11 @@ public class Assets implements Disposable, AssetErrorListener
         }
     }
     
+    /**
+     * Gold Coin asset class for storing of the gold coin after lookup
+     * 
+     * Yellow denotes gold coin on level map
+     */
     public class AssetGoldCoin
     {
         public final AtlasRegion goldCoin;
@@ -112,6 +126,11 @@ public class Assets implements Disposable, AssetErrorListener
         }
     }
     
+    /**
+     * Feather asset class for storing of the feather after lookup
+     * 
+     * Purple denotes feather on level map
+     */
     public class AssetFeather
     {
         public final AtlasRegion feather;
@@ -121,6 +140,9 @@ public class Assets implements Disposable, AssetErrorListener
         }
     }
     
+    /**
+     * Level decoration asset class for storing of the decorations after lookup
+     */
     public class AssetLevelDecoration
     {
         public final AtlasRegion cloud01;
