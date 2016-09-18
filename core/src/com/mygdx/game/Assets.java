@@ -18,11 +18,11 @@ public class Assets implements Disposable, AssetErrorListener
     public static final Assets instance= new Assets();
     private AssetManager assetManager;
     
-    public AssetBunny bunny;
-    public AssetRock rock;
-    public AssetGoldCoin goldCoin;
-    public AssetFeather feather;
-    public AssetLevelDecoration levelDecoration;
+    public AssetTank tank;
+    public AssetGround ground;
+    public AssetCrate crate;
+    public AssetBarrels barrels;
+//    public AssetLevelDecoration levelDecoration;
     
     //Singleton : prevent instantiation from other classes
     private Assets() {}
@@ -57,11 +57,11 @@ public class Assets implements Disposable, AssetErrorListener
         }
 
         //Create game resources objects
-        bunny=new AssetBunny(atlas);
-        rock= new AssetRock(atlas);
-        goldCoin = new AssetGoldCoin(atlas);
-        feather= new AssetFeather(atlas);
-        levelDecoration = new AssetLevelDecoration(atlas);
+        tank=new AssetTank(atlas);
+        ground= new AssetGround(atlas);
+        crate = new AssetCrate(atlas);
+        barrels= new AssetBarrels(atlas);
+//        levelDecoration = new AssetLevelDecoration(atlas);
     }
     
     
@@ -83,61 +83,85 @@ public class Assets implements Disposable, AssetErrorListener
         Gdx.app.error(TAG,"Couldn't load asset '" + asset.fileName + " ' ", (Exception) throwable);
     }
     
-    public class AssetBunny
+    /**
+     * Tank asset class for storing of the tank after lookup
+     * 
+     * White denotes spawn point on level map
+     */
+    public class AssetTank
     {
-        public final AtlasRegion head;
-        public AssetBunny(TextureAtlas atlas)
+        public final AtlasRegion tank;
+        public AssetTank(TextureAtlas atlas)
         {
-            head=atlas.findRegion("bunny_head");
+            tank=atlas.findRegion("tank");
         }
     }
     
-    public class AssetRock
+    /**
+     * Ground asset class for storing of the ground pieces after lookup
+     * 
+     * Green denotes ground piece on level map
+     */
+    public class AssetGround
     {
-        public final AtlasRegion edge;
-        public final AtlasRegion middle;
-        public AssetRock (TextureAtlas atlas)
+        public final AtlasRegion edgeL;
+        public final AtlasRegion top;
+        public final AtlasRegion filler;
+        public final AtlasRegion edgeR;
+        public AssetGround (TextureAtlas atlas)
         {
-            edge = atlas.findRegion("rock_edge");
-            middle= atlas.findRegion("rock_middle");
+            edgeL = atlas.findRegion("Basic_Ground_CornerL_Pixel");
+            top= atlas.findRegion("Basic_Ground_Top_Pixel");
+            filler= atlas.findRegion("Basic_Ground_Filler_Pixel");
+            edgeR = atlas.findRegion("Basic_Ground_CornerR_Pixel");
         }
     }
     
-    public class AssetGoldCoin
+    /**
+     * Crate asset class for storing of the crate after lookup
+     * 
+     * Yellow denotes crate piece on level map
+     */
+    public class AssetCrate
     {
-        public final AtlasRegion goldCoin;
-        public AssetGoldCoin(TextureAtlas atlas)
+        public final AtlasRegion crate;
+        public AssetCrate(TextureAtlas atlas)
         {
-            goldCoin=atlas.findRegion("item_gold_coin");
+            crate=atlas.findRegion("SmallCrate");
         }
     }
     
-    public class AssetFeather
+    /**
+     * Barrel asset class for storing of the barrels after lookup 
+     * 
+     * Purple denotes barrel piece on level map
+     */      
+    public class AssetBarrels
     {
-        public final AtlasRegion feather;
-        public AssetFeather(TextureAtlas atlas)
+        public final AtlasRegion barrels;
+        public AssetBarrels(TextureAtlas atlas)
         {
-            feather=atlas.findRegion("item_feather");
+            barrels=atlas.findRegion("Barrels");
         }
     }
     
-    public class AssetLevelDecoration
-    {
-        public final AtlasRegion cloud01;
-        public final AtlasRegion cloud02;
-        public final AtlasRegion cloud03;
-        public final AtlasRegion mountainLeft;
-        public final AtlasRegion mountainRight;
-        public final AtlasRegion waterOverlay;
-        
-        public AssetLevelDecoration (TextureAtlas atlas)
-        {
-            cloud01= atlas.findRegion("cloud01");
-            cloud02= atlas.findRegion("cloud02");
-            cloud03= atlas.findRegion("cloud03");
-            mountainLeft=atlas.findRegion("mountain_left");
-            mountainRight=atlas.findRegion("mountain_right");
-            waterOverlay=atlas.findRegion("water_overlay");
-        }
-    }
+//    public class AssetLevelDecoration
+//    {
+//        public final AtlasRegion cloud01;
+//        public final AtlasRegion cloud02;
+//        public final AtlasRegion cloud03;
+//        public final AtlasRegion mountainLeft;
+//        public final AtlasRegion mountainRight;
+//        public final AtlasRegion waterOverlay;
+//        
+//        public AssetLevelDecoration (TextureAtlas atlas)
+//        {
+//            cloud01= atlas.findRegion("cloud01");
+//            cloud02= atlas.findRegion("cloud02");
+//            cloud03= atlas.findRegion("cloud03");
+//            mountainLeft=atlas.findRegion("mountain_left");
+//            mountainRight=atlas.findRegion("mountain_right");
+//            waterOverlay=atlas.findRegion("water_overlay");
+//        }
+//    }
 }

@@ -1,0 +1,55 @@
+
+tankrun.pack.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Barrels
+  rotate: false
+  xy: 2, 2
+  size: 80, 25
+  orig: 80, 25
+  offset: 0, 0
+  index: -1
+Basic_Ground_CornerL_Pixel
+  rotate: false
+  xy: 254, 162
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Basic_Ground_CornerR_Pixel - Copy
+  rotate: false
+  xy: 292, 200
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Basic_Ground_Filler_Pixel
+  rotate: false
+  xy: 254, 128
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Basic_Ground_Top_Pixel
+  rotate: false
+  xy: 326, 200
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+SmallCrate
+  rotate: false
+  xy: 254, 196
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
+tank
+  rotate: false
+  xy: 2, 29
+  size: 250, 203
+  orig: 250, 203
+  offset: 0, 0
+  index: -1
