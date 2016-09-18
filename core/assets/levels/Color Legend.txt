@@ -1,0 +1,4 @@
+Green is the ground pieces
+Yellow is the small crate
+Purple is the barrels
+White is the tank spawn location
