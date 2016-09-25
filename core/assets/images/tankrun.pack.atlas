@@ -1,55 +1,104 @@
 
 tankrun.pack.png
-size: 512,256
+size: 256,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 Barrels
   rotate: false
-  xy: 2, 2
-  size: 80, 25
-  orig: 80, 25
+  xy: 22, 214
+  size: 16, 25
+  orig: 16, 25
   offset: 0, 0
   index: -1
 Basic_Ground_CornerL_Pixel
   rotate: false
-  xy: 254, 162
+  xy: 148, 191
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Basic_Ground_CornerR_Pixel
+  rotate: false
+  xy: 80, 207
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Basic_Ground_CornerR_Pixel - Copy
   rotate: false
-  xy: 292, 200
+  xy: 80, 207
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Basic_Ground_Filler_Pixel
   rotate: false
-  xy: 254, 128
+  xy: 114, 207
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Basic_Ground_Top_Pixel
   rotate: false
-  xy: 326, 200
-  size: 32, 32
-  orig: 32, 32
+  xy: 198, 191
+  size: 48, 48
+  orig: 48, 48
   offset: 0, 0
   index: -1
 SmallCrate
   rotate: false
-  xy: 254, 196
-  size: 36, 36
-  orig: 36, 36
+  xy: 2, 221
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+fog
+  rotate: false
+  xy: 2, 61
+  size: 184, 51
+  orig: 184, 51
+  offset: 0, 0
+  index: -1
+lava_overlay
+  rotate: false
+  xy: 222, 29
+  size: 32, 160
+  orig: 32, 160
+  offset: 0, 0
+  index: -1
+mountain
+  rotate: false
+  xy: 2, 2
+  size: 207, 57
+  orig: 207, 57
   offset: 0, 0
   index: -1
 tank
   rotate: false
-  xy: 2, 29
-  size: 250, 203
-  orig: 250, 203
+  xy: 40, 209
+  size: 38, 30
+  orig: 38, 30
+  offset: 0, 0
+  index: -1
+whitecloud01
+  rotate: false
+  xy: 2, 147
+  size: 68, 60
+  orig: 68, 60
+  offset: 0, 0
+  index: -1
+whitecloud02
+  rotate: false
+  xy: 140, 114
+  size: 80, 75
+  orig: 80, 75
+  offset: 0, 0
+  index: -1
+whitecloud03
+  rotate: false
+  xy: 72, 130
+  size: 66, 75
+  orig: 66, 75
   offset: 0, 0
   index: -1
