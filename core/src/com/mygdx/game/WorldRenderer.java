@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.util.Constants;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.Align;
 
 /**
  *  @author Kalan Kriner
@@ -56,6 +57,46 @@ public class WorldRenderer implements Disposable
         renderWorld(batch);
         renderGui(batch);
     }
+    
+    private void renderGuiGameOverMessage(SpriteBatch batch)
+    {
+        float x = cameraGUI.viewportWidth / 2;
+        float y = cameraGUI.viewportHeight / 2;
+        if(worldController.isGameOver())
+        {
+            BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
+            fontGameOver.setColor(1, 0.75f, 0.25f, 1);
+            fontGameOver.draw(batch, "GAME OVER", x,y,0, Align.center,false);
+            fontGameOver.setColor(1,1,1,1);
+            
+        }
+    }
+    
+    /**
+     * Renders the power up as a fading in and out icon
+     * @param batch used for the drawing
+     */
+    private void renderGuiFeatherPowerup(SpriteBatch batch)
+    {
+        float x =-15;
+        float y =30;
+        float timeLeftFeatherPowerup = worldController.level.bunnyHead.timeLeftFeatherPowerup;
+        if(timeLeftFeatherPowerup >0)
+        {
+            //Start icon fade in/out if the left power-up time is less than 4 seconds.
+            //Then fade interval is set to change 5 changes per second.
+            if(timeLeftFeatherPowerup < 4)
+            {
+                if(((int)(timeLeftFeatherPowerup * 5) % 2) !=0)
+                {
+                    batch.setColor(1, 1, 1, 0.5f);
+                }
+            }
+            batch.draw(Assets.instance.feather.feather, x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
+            batch.setColor(1, 1, 1 ,1);
+            Assets.instance.fonts.defaultSmall.draw(batch, "" + (int) timeLeftFeatherPowerup, x+60, y+ 57);
+        }
+    }
 
     /**
      * Draws the level that is loaded from the file
@@ -92,7 +133,7 @@ public class WorldRenderer implements Disposable
         float y= -15;
         for(int i=0; i<Constants.LIVES_START;i++)
         {
-            if(worldController.lives<=1)
+            if(worldController.lives <= i)
                 batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
             batch.draw(Assets.instance.bunny.head, x+i*50, y, 50, 50, 120, 100, 0.35f, -0.35f, 0);
             batch.setColor(1, 1, 1, 1);
@@ -139,10 +180,14 @@ public class WorldRenderer implements Disposable
         batch.begin();
         //Draw collected gold coins icon + text (anchored to top left edge)
         renderGuiScore(batch);
+        //Draw collected feather icon (anchored to top left edge)
+        renderGuiFeatherPowerup(batch);
         //Draw extra lives icon + text (anchored to top right edge)
         renderGuiExtraLive(batch);
         //Draw FPS text (anchored to bottom right edge)
         renderGuiFpsCounter(batch);
+        //Draw game over text
+        renderGuiGameOverMessage(batch);
         batch.end();
         
     }
