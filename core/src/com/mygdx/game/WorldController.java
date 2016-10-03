@@ -117,9 +117,11 @@ public class WorldController extends InputAdapter
         case FALLING:
         case JUMP_FALLING:
             bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
+            bunnyHead.jumpState= JUMP_STATE.GROUNDED;
             break;
         case JUMP_RISING:
             bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
+            break;
         }
     }
     
@@ -216,7 +218,7 @@ public class WorldController extends InputAdapter
             }
             
             //Bunny Jump
-            if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)|| Gdx.input.isKeyJustPressed(Keys.UP))
+            if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE))
             {
                 level.bunnyHead.setJumping(true);
             }
