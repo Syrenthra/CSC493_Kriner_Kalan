@@ -9,6 +9,10 @@ import com.mygdx.game.objects.Clouds;
 import com.mygdx.game.objects.Mountains;
 import com.mygdx.game.objects.Rock;
 import com.mygdx.game.objects.LavaOverlay;
+import com.mygdx.game.objects.Tank;
+import com.mygdx.game.objects.Barrels;
+import com.mygdx.game.objects.SmallCrate;
+
 
 /**
  * Level loader which places objects where they are color coded to on the level image
@@ -27,8 +31,8 @@ public class Level
         EMPTY(0,0,0), //Black
         ROCK(0,255,0), //Green
         PLAYER_SPAWNPOINT(255,255,255), //White
-        ITEM_FEATHER(255,0,255), // Purple
-        ITEM_GOLD_COIN(255,255,0); //Yellow
+        ITEM_BARREL(255,0,255), // Purple
+        ITEM_CRATE(255,255,0); //Yellow
         
         private int color;
         
@@ -62,14 +66,19 @@ public class Level
         }
     }
     
+    //Player Character
+    public Tank tank;
+    
     //Objects
+    public Array<SmallCrate> crates;
+    public Array<Barrels> barrels;
     public Array<Rock> rocks;
 
     
     //Decoration
     public Clouds clouds;
     public Mountains mountains;
-    public LavaOverlay waterOverlay;
+    public LavaOverlay lavaOverlay;
     
     public Level (String filename)
     {
@@ -82,8 +91,12 @@ public class Level
      */
     private void init(String filename)
     {
+        // Player character
+        tank= null;
         //Objects
         rocks= new Array<Rock>();
+        crates = new Array<SmallCrate>();
+        barrels = new Array<Barrels>();
         
         // Load image file that represents the level data
         Pixmap pixmap =new Pixmap(Gdx.files.internal(filename));
@@ -128,19 +141,30 @@ public class Level
                 //Player spawn point
                 else if(BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel))
                 {
-                    
+                    obj = new Tank();
+                    offsetHeight = -3.0f;
+                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+                    tank = (Tank) obj;
+
                 }
                 
-                //Feather
-                else if(BLOCK_TYPE.ITEM_FEATHER.sameColor(currentPixel))
-                {
-                    
+                //Barrel
+                else if(BLOCK_TYPE.ITEM_BARREL.sameColor(currentPixel))
+                {                    
+			    obj = new Barrels();
+                    offsetHeight = -1.5f;
+                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+                    barrels.add((Barrels) obj);
+
                 }
                 
-                //Gold Coin
-                else if(BLOCK_TYPE.ITEM_GOLD_COIN.sameColor(currentPixel))
+                //Crate
+                else if(BLOCK_TYPE.ITEM_CRATE.sameColor(currentPixel))
                 {
-                    
+                    obj = new SmallCrate();
+                    offsetHeight = -1.5f;
+                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+                    crates.add((SmallCrate) obj);
                 }
                 
                 //Unknown object/pixel color
@@ -163,8 +187,8 @@ public class Level
         clouds.position.set(0,2);
         mountains= new Mountains(pixmap.getWidth());
         mountains.position.set(-1,-1);
-        waterOverlay= new LavaOverlay(pixmap.getWidth());
-        waterOverlay.position.set(0,-3.75f);
+        lavaOverlay= new LavaOverlay(pixmap.getWidth());
+        lavaOverlay.position.set(0,-3.75f);
 
         // Free memory
         pixmap.dispose();
@@ -183,11 +207,34 @@ public class Level
         //Draw Rocks
         for(Rock rock:rocks)
             rock.render(batch);
+        //Draw Gold Coins
+        for(SmallCrate goldCoin:crates)
+            goldCoin.render(batch);
+        //Draw Feathers
+        for(Barrels feather:barrels)
+            feather.render(batch);
+        //Draw Player Character
+        tank.render(batch);
         //Draw Water Overlay
-        waterOverlay.render(batch);
+        lavaOverlay.render(batch);
         //Draw Clouds
-        clouds.render(batch);
-        
-        
+        clouds.render(batch);    
     }
+
+    /**
+     * Updates all of the level specific items 
+     * @param deltaTime
+     */
+    public void update (float deltaTime)
+    {
+        tank.update(deltaTime);
+        for(Rock rock : rocks)
+            rock.update(deltaTime);
+        for(SmallCrate goldCoin:crates)
+            goldCoin.update(deltaTime);
+        for(Barrels feather: barrels)
+            feather.update(deltaTime);
+        clouds.update(deltaTime);
+    }
+
 }
