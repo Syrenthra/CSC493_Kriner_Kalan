@@ -119,9 +119,11 @@ private float timeLeftGameOverDelay;
         case FALLING:
         case JUMP_FALLING:
             tank.position.y = rock.position.y + tank.bounds.height + tank.origin.y;
+            tank.jumpState = JUMP_STATE.GROUNDED;
             break;
         case JUMP_RISING:
             tank.position.y = rock.position.y + tank.bounds.height + tank.origin.y;
+            break;
         }
     }
     
@@ -218,7 +220,7 @@ private float timeLeftGameOverDelay;
             }
             
             //Bunny Jump
-            if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)|| Gdx.input.isKeyJustPressed(Keys.UP))
+            if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE))
             {
                 level.tank.setJumping(true);
             }

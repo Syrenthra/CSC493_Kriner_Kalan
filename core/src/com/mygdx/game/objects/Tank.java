@@ -84,11 +84,6 @@ public class Tank extends AbstractGameObject
             break;
         case FALLING: //Falling down
         case JUMP_FALLING: //Falling down after jump
-            if(jumpKeyPressed && hasBarrelPowerup)
-            {
-                timeJumping = JUMP_TIME_OFFSET_FLYING;
-                jumpState = JUMP_STATE.JUMP_RISING;
-            }
             break;
         }
     }
@@ -102,7 +97,13 @@ public class Tank extends AbstractGameObject
         hasBarrelPowerup = pickedUp;
         if(pickedUp)
         {
+            if(timeLeftBarrelPowerup <=0)
+                terminalVelocity.x= (float)(terminalVelocity.x *2); //Increases speed, but only once per time limit
             timeLeftBarrelPowerup = Constants.ITEM_BARREL_POWERUP_DURATION;
+        }
+        else
+        {
+            terminalVelocity.x= (float) (terminalVelocity.x /2); //Resets terminal velocity
         }
         
     }
@@ -161,7 +162,7 @@ public class Tank extends AbstractGameObject
                 velocity.y = terminalVelocity.y;
                 if(hasBarrelPowerup)
                 {
-                    velocity.y=velocity.y *2;
+                    velocity.y=velocity.y;
                 }
             }
             break;
@@ -177,7 +178,7 @@ public class Tank extends AbstractGameObject
                 velocity.y = terminalVelocity.y;
                 if(hasBarrelPowerup)
                 {
-                    velocity.y=velocity.y *2;
+                    velocity.y=velocity.y;
                 }
             }
         }
