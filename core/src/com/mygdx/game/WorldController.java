@@ -11,6 +11,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.Game;
+import com.mygdx.screens.MenuScreen;
 import com.mygdx.game.objects.Rock;
 import com.mygdx.game.objects.BunnyHead;
 import com.mygdx.game.objects.BunnyHead.JUMP_STATE;
@@ -20,15 +22,22 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.util.Constants;
 
 /**
- * @author Kalan Kriner
- * 
  * WorldController handles the running of the game and handles
  * calls to many other classes
+ * @author Kalan Kriner
  */
 public class WorldController extends InputAdapter
 {
 	public CameraHelper cameraHelper;
 	private static final String TAG=WorldController.class.getName();
+	
+	private Game game;
+	
+	private void backToMenu()
+	{
+	    // Switch to menu screen
+	    game.setScreen(new MenuScreen(game));
+	}
 	
 	public Level level;
 	public int lives;
@@ -47,8 +56,9 @@ public class WorldController extends InputAdapter
 	/**
 	 * Constructor that just calls the initialize method
 	 */
-	public WorldController() 
+	public WorldController(Game game) 
 	{
+	    this.game = game;
 		init();
 	}
 	
@@ -262,7 +272,9 @@ public class WorldController extends InputAdapter
 		{
 		    timeLeftGameOverDelay -= deltaTime;
 		    if(timeLeftGameOverDelay <0)
-		        init();
+		    {
+		        backToMenu();
+		    }
 		}
 		else
 		{
@@ -341,6 +353,12 @@ public class WorldController extends InputAdapter
 		{
 		    cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.bunnyHead);
 		    Gdx.app.debug(TAG, "Camera follow enabled: " + cameraHelper.hasTarget());
+		}
+		
+		//Back to Menu
+		else if(keycode == Keys.ESCAPE || keycode == Keys.BACK)
+		{
+		    backToMenu();
 		}
 		return false;
 	}
