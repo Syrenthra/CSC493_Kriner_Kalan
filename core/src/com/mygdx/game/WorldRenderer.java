@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.util.Constants;
+import com.mygdx.util.GamePreferences;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 
@@ -188,6 +189,7 @@ private OrthographicCamera cameraGUI;
         //Draw extra lives icon + text (anchored to top right edge)
         renderGuiExtraLive(batch);
         //Draw FPS text (anchored to bottom right edge)
+        if(GamePreferences.instance.showFpsCounter)
         renderGuiFpsCounter(batch);
 	   //Draw game over text
         renderGuiGameOverMessage(batch);

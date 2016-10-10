@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Assets;
 import com.mygdx.util.Constants;
+import com.mygdx.util.GamePreferences;
+import com.mygdx.util.CharacterSkin;
 
 public class Tank extends AbstractGameObject
 {
@@ -193,6 +195,10 @@ public class Tank extends AbstractGameObject
     public void render(SpriteBatch batch)
     {
         TextureRegion reg = null;
+        
+        //Apply Skin Color
+        batch.setColor(CharacterSkin.values()[GamePreferences.instance.charSkin].getColor());
+
         
         // Set special color when game object has a barrel power-up
         if(hasBarrelPowerup)

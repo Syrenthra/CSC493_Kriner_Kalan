@@ -11,6 +11,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.Game;
+import com.mygdx.screens.MenuScreen;
 import com.mygdx.game.objects.Rock;
 import com.mygdx.game.objects.Tank;
 import com.mygdx.game.objects.Tank.JUMP_STATE;
@@ -31,6 +33,14 @@ public class WorldController extends InputAdapter
     public CameraHelper cameraHelper;
     private static final String TAG=WorldController.class.getName();
 	
+	private Game game;
+	
+	private void backToMenu()
+	{
+	    // Switch to menu screen
+	    game.setScreen(new MenuScreen(game));
+	}
+
     public Level level;
     public int lives;
     public int score;
@@ -49,8 +59,9 @@ public class WorldController extends InputAdapter
 	/**
 	 * Constructor that just calls the initialize method
 	 */
-	public WorldController() 
+	public WorldController(Game game) 
 	{
+		this.game = game;
 		init();
 	}
 	
@@ -266,7 +277,10 @@ private float timeLeftGameOverDelay;
 		{
 		    timeLeftGameOverDelay -= deltaTime;
 		    if(timeLeftGameOverDelay <0)
-		        init();
+	 	    {
+		        backToMenu();
+		    }
+
 		}
 		else
 		{
@@ -347,6 +361,12 @@ private float timeLeftGameOverDelay;
 		{
 		    cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.tank);
 		    Gdx.app.debug(TAG, "Camera follow enabled: " + cameraHelper.hasTarget());
+		}
+
+		//Back to Menu
+		else if(keycode == Keys.ESCAPE || keycode == Keys.BACK)
+		{
+		    backToMenu();
 		}
 		return false;
 	}

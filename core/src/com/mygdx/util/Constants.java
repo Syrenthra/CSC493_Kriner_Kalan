@@ -20,6 +20,15 @@ public class Constants
 	
 	//Location of description file for texture atlas
 	public static final String TEXTURE_ATLAS_OBJECTS = "images/tankrun.pack.atlas";
+
+	public static final String TEXTURE_ATLAS_UI= "images/canyonbunny-ui.pack.atlas";
+	
+	public static final String TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
+	
+	//Location of description files for skins
+	public static final String SKIN_LIBGDX_UI = "images/uiskin.json";
+	
+	public static final String SKIN_CANYONBUNNY_UI = "images/canyonbunny-ui.json";
 	
 	//Location of image file for level 01
 	public static final String LEVEL_01 = "levels/level - 01.png";
@@ -32,5 +41,8 @@ public class Constants
 	
 	//Delay after game over
 	public static final float TIME_DELAY_GAME_OVER = 3;
+
+	//File for storing game preferences
+	public static final String PREFERENCES = "canyonbunny.prefs";
 
 }
