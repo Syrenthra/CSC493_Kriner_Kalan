@@ -9,7 +9,6 @@ import com.mygdx.game.Assets;
  * Handles the layout and drawing of the mountains for the background
  * 
  * @author Kalan Kriner
- *
  */
 public class Mountains extends AbstractGameObject
 {
@@ -17,6 +16,10 @@ public class Mountains extends AbstractGameObject
     private TextureRegion regMountainRight;
     private int length;
     
+    /**
+     * Sets the length of the mountain ranges to be made across the screen
+     * @param length of the mountain range
+     */
     public Mountains(int length)
     {
         this.length=length;

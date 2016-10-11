@@ -4,6 +4,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Assets;
 
+/**
+ * Power-up item that can be collected for score
+ * @author Kalan Kriner
+ */
 public class Barrels extends AbstractGameObject
 {
 private TextureRegion regFeather;

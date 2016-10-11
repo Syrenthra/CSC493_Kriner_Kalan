@@ -23,10 +23,9 @@ import com.mygdx.util.Constants;
 
 
 /**
- * @author Kalan Kriner
- * 
  * WorldController handles the running of the game and handles
  * calls to many other classes
+ * @author Kalan Kriner
  */
 public class WorldController extends InputAdapter
 {
@@ -35,6 +34,9 @@ public class WorldController extends InputAdapter
 	
 	private Game game;
 	
+	/**
+	 * Returns from the game screen to the main menu
+	 */
 	private void backToMenu()
 	{
 	    // Switch to menu screen
@@ -77,7 +79,7 @@ public class WorldController extends InputAdapter
         initLevel();
 	}
 
-private float timeLeftGameOverDelay;
+	private float timeLeftGameOverDelay;
 	
 	/**
 	 * Checks the lives left

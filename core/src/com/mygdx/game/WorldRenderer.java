@@ -11,10 +11,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 
 /**
- *  @author Kalan Kriner
- *  
  *  World Renderer is where the game's rendering is handled with calling
- *  updates and initializations. 
+ *  updates and initializations.
+ *  @author Kalan Kriner
  */
 
 public class WorldRenderer implements Disposable
@@ -32,7 +31,7 @@ public class WorldRenderer implements Disposable
         this.worldController = worldController;
         init();
     }
-private OrthographicCamera cameraGUI;
+    private OrthographicCamera cameraGUI;
     
     /**
      * Allocates the sprite batch for use with rendering and creates and centers the camera
@@ -60,6 +59,10 @@ private OrthographicCamera cameraGUI;
     }
 
 
+    /**
+     * Displays the text "Game over" when the player runs out of lives
+     * @param batch
+     */
     private void renderGuiGameOverMessage(SpriteBatch batch)
     {
         float x = cameraGUI.viewportWidth / 2;

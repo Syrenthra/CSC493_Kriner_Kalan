@@ -11,7 +11,6 @@ import com.mygdx.game.Assets;
  * Handles placement of clouds randomly along the map
  * 
  * @author Kalan Kriner
- *
  */
 public class Clouds extends AbstractGameObject
 {

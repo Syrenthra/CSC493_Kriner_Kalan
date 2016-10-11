@@ -5,10 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Assets;
 
 /**
- * Handles the placement of the water overlay along the bottom of the map
+ * Handles the placement of the lava overlay along the bottom of the map
  * 
  * @author Kalan Kriner
- *
  */
 public class LavaOverlay extends AbstractGameObject
 {

@@ -4,6 +4,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Assets;
 
+/**
+ * Object t be collected for score
+ * @author Kalan Kriner
+ */
 public class SmallCrate extends AbstractGameObject
 {
     private TextureRegion regGoldCoin;

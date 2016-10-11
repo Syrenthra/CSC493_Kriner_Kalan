@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 /**
  * Handles the loading and basic managing of the assets and fonts for the game
- * 
  * @author Kalan Kriner
  */
 public class Assets implements Disposable, AssetErrorListener
@@ -37,7 +36,6 @@ public AssetFonts fonts;
     
     /**
      * Loads in the basic fonts and then creates 3 different sizes that can be used
-     * 
      * @author Kalan Kriner
      */
     public class AssetFonts
@@ -46,6 +44,9 @@ public AssetFonts fonts;
         public final BitmapFont defaultNormal;
         public final BitmapFont defaultBig;
         
+        /**
+         * Creates the 3 fonts and sets their sizes and filtering
+         */
         public AssetFonts()
         {
             // Create three fonts using Libgdx's 15px bitmap font
@@ -65,7 +66,6 @@ public AssetFonts fonts;
             
         }
     }
-
     
     /**
      * Loads in all of the assets into the manager
@@ -190,6 +190,10 @@ public AssetFonts fonts;
         }
     }
     
+    /**
+     * Holds instances of all of the different decorations that will be used
+     * @author Kalan Kriner
+     */
     public class AssetLevelDecoration
     {
         public final AtlasRegion cloud01;
@@ -198,6 +202,10 @@ public AssetFonts fonts;
         public final AtlasRegion mountain;
         public final AtlasRegion lavaOverlay;
         
+        /**
+         * Sets the decorations to their correct images
+         * @param atlas atlas to get the information from
+         */
         public AssetLevelDecoration (TextureAtlas atlas)
         {
             cloud01= atlas.findRegion("whitecloud01");

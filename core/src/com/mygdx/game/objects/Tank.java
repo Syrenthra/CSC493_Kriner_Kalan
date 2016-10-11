@@ -8,6 +8,10 @@ import com.mygdx.util.Constants;
 import com.mygdx.util.GamePreferences;
 import com.mygdx.util.CharacterSkin;
 
+/**
+ * Player character that moves and jumps
+ * @author Kalan Kriner
+ */
 public class Tank extends AbstractGameObject
 {
     public static final String Tag = Tank.class.getName();

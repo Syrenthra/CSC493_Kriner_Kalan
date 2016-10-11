@@ -1,8 +1,8 @@
 package com.mygdx.util;
 
 /**
- * @author Kalan Kriner
  * Class to store constants that can be used in in multiple locations.
+ * @author Kalan Kriner
  */
 public class Constants 
 {

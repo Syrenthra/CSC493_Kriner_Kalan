@@ -8,7 +8,6 @@ import com.mygdx.game.Assets;
  * Handles the drawing of the platform of rocks with end pieces and middle pieces
  * 
  * @author Kalan Kriner
- *
  */
 public class Rock extends AbstractGameObject
 {
