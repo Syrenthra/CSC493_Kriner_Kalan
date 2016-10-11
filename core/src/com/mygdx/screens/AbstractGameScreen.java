@@ -19,6 +19,7 @@ public abstract class AbstractGameScreen implements Screen
         this.game=game;
     }
     
+    // Methods that will be unique to each screen and have to be made for each screen
     public abstract void render(float deltaTime);
     public abstract void resize(int width, int height);
     public abstract void show();

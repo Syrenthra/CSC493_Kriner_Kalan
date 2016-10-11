@@ -6,10 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.objects.AbstractGameObject;
 
 /**
- * @author Kalan Kriner
- *
  * Camera for the game that can be moved or set to a specific
  * target and zoom in and out
+ * @author Kalan Kriner
  */
 public class CameraHelper 
 {

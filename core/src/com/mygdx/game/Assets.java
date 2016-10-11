@@ -46,6 +46,9 @@ public class Assets implements Disposable, AssetErrorListener
         public final BitmapFont defaultNormal;
         public final BitmapFont defaultBig;
         
+        /**
+         * Creates the 3 fonts and does their settings
+         */
         public AssetFonts()
         {
             // Create three fonts using Libgdx's 15px bitmap font
@@ -195,6 +198,10 @@ public class Assets implements Disposable, AssetErrorListener
         public final AtlasRegion mountainRight;
         public final AtlasRegion waterOverlay;
         
+        /**
+         * Sets the texture of each object to its image from within the texture atlas
+         * @param atlas
+         */
         public AssetLevelDecoration (TextureAtlas atlas)
         {
             cloud01= atlas.findRegion("cloud01");

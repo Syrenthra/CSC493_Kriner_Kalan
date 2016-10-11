@@ -10,11 +10,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.util.GamePreferences;
 
-/**
- *  @author Kalan Kriner
- *  
+/** 
  *  World Renderer is where the game's rendering is handled with calling
  *  updates and initializations. 
+ *  @author Kalan Kriner
  */
 
 public class WorldRenderer implements Disposable
@@ -59,6 +58,10 @@ public class WorldRenderer implements Disposable
         renderGui(batch);
     }
     
+    /**
+     * Displays the text "Game over" to the player
+     * @param batch used to draw the UI
+     */
     private void renderGuiGameOverMessage(SpriteBatch batch)
     {
         float x = cameraGUI.viewportWidth / 2;

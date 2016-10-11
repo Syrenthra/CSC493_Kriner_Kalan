@@ -8,6 +8,10 @@ import com.mygdx.util.Constants;
 import com.mygdx.util.CharacterSkin;
 import com.mygdx.util.GamePreferences;
 
+/**
+ * The player character's main class where motion updates and drawing are done
+ * @author Kalan Kriner
+ */
 public class BunnyHead extends AbstractGameObject
 {
     public static final String Tag = BunnyHead.class.getName();

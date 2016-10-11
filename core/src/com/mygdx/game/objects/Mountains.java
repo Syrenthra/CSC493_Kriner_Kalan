@@ -17,6 +17,10 @@ public class Mountains extends AbstractGameObject
     private TextureRegion regMountainRight;
     private int length;
     
+    /**
+     * Constructor for the mountains
+     * @param length sets how long to make the mountains on screen
+     */
     public Mountains(int length)
     {
         this.length=length;

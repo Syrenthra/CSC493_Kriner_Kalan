@@ -4,12 +4,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Assets;
 
+/**
+ * Collectible item for score. 
+ * @author Kalan Kriner
+ */
 public class GoldCoin extends AbstractGameObject
 {
     private TextureRegion regGoldCoin;
     
     public boolean collected;
     
+    /**
+     * Constructor calling the initialize method
+     */
     public GoldCoin()
     {
         init();

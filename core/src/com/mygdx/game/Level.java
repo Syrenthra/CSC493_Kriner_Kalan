@@ -78,6 +78,9 @@ public class Level
     public Mountains mountains;
     public WaterOverlay waterOverlay;
     
+    /**Loads in the level image to initialize the game based on it
+     * @param filename name of the level image
+     */
     public Level (String filename)
     {
         init(filename);

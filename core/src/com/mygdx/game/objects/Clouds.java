@@ -56,6 +56,9 @@ public class Clouds extends AbstractGameObject
         }
     }
 
+    /**
+     * @param length the amount of clouds to be used on screen
+     */
     public Clouds(float length)
     {
         this.length=length;

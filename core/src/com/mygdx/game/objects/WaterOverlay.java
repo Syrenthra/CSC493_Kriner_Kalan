@@ -8,7 +8,6 @@ import com.mygdx.game.Assets;
  * Handles the placement of the water overlay along the bottom of the map
  * 
  * @author Kalan Kriner
- *
  */
 public class WaterOverlay extends AbstractGameObject
 {

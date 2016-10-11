@@ -52,6 +52,10 @@ public abstract class AbstractGameObject
         position.y += velocity.y * deltaTime;
     }
     
+    /**
+     * Each object needs to implement its own rendering method
+     * @param batch used for drawing
+     */
     public abstract void render(SpriteBatch batch);
     
     /**

@@ -8,7 +8,6 @@ import com.mygdx.game.Assets;
  * Handles the drawing of the platform of rocks with end pieces and middle pieces
  * 
  * @author Kalan Kriner
- *
  */
 public class Rock extends AbstractGameObject
 {
@@ -89,9 +88,6 @@ public class Rock extends AbstractGameObject
         reg= regEdge;
         batch.draw(reg.getTexture(), position.x+relX, position.y+relY, origin.x+ dimension.x / 8, origin.y, dimension.x/4,
                 dimension.y, scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(),
-                reg.getRegionHeight(),true, false);
-        
+                reg.getRegionHeight(),true, false);      
     }
-    
-
 }

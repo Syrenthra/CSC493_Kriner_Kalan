@@ -33,6 +33,9 @@ public class WorldController extends InputAdapter
 	
 	private Game game;
 	
+	/**
+	 * Switches from the game screen to the main menu
+	 */
 	private void backToMenu()
 	{
 	    // Switch to menu screen
