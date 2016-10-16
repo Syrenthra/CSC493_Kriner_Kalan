@@ -3,6 +3,7 @@ package com.mygdx.game.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.mygdx.game.Assets;
 import com.mygdx.util.Constants;
 import com.mygdx.util.GamePreferences;
@@ -15,6 +16,8 @@ import com.mygdx.util.CharacterSkin;
 public class Tank extends AbstractGameObject
 {
     public static final String Tag = Tank.class.getName();
+    
+    public ParticleEffect dustParticles = new ParticleEffect();
     
     private final float JUMP_TIME_MAX = 0.3f;
     private final float JUMP_TIME_MIN = 0.1f;
@@ -66,6 +69,9 @@ public class Tank extends AbstractGameObject
         // Power-ups
         hasBarrelPowerup = false;
         timeLeftBarrelPowerup = 0;
+        
+        //Particles
+        dustParticles.load(Gdx.files.internal("particles/dust.pfx"), Gdx.files.internal("particles"));
     }
     
     /**
@@ -145,6 +151,7 @@ public class Tank extends AbstractGameObject
                 setBarrelPowerup(false);
             }
         }
+        dustParticles.update(deltaTime);
     }
     
     /**
@@ -157,6 +164,11 @@ public class Tank extends AbstractGameObject
         {
         case GROUNDED:
             jumpState = JUMP_STATE.FALLING;
+            if(velocity.x !=0)
+            {
+                dustParticles.setPosition(position.x + dimension.x /2, position.y);
+                dustParticles.start();
+            }
             break;
         case JUMP_RISING:
             // Keep track of jump time
@@ -189,7 +201,10 @@ public class Tank extends AbstractGameObject
             }
         }
         if (jumpState != JUMP_STATE.GROUNDED)
+        {
+            dustParticles.allowCompletion();
             super.updateMotionY(deltaTime);
+        }
     }
 
     /**
@@ -199,6 +214,9 @@ public class Tank extends AbstractGameObject
     public void render(SpriteBatch batch)
     {
         TextureRegion reg = null;
+        
+        //Draw Particles
+        dustParticles.draw(batch);
         
         //Apply Skin Color
         batch.setColor(CharacterSkin.values()[GamePreferences.instance.charSkin].getColor());
