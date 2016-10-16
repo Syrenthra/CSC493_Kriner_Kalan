@@ -3,6 +3,7 @@ package com.mygdx.game.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.mygdx.game.Assets;
 import com.mygdx.util.Constants;
 import com.mygdx.util.CharacterSkin;
@@ -15,6 +16,8 @@ import com.mygdx.util.GamePreferences;
 public class BunnyHead extends AbstractGameObject
 {
     public static final String Tag = BunnyHead.class.getName();
+    
+    public ParticleEffect dustParticles = new ParticleEffect();
     
     private final float JUMP_TIME_MAX = 0.3f;
     private final float JUMP_TIME_MIN = 0.1f;
@@ -66,6 +69,9 @@ public class BunnyHead extends AbstractGameObject
         // Power-ups
         hasFeatherPowerup = false;
         timeLeftFeatherPowerup = 0;
+        
+        //Particles
+        dustParticles.load(Gdx.files.internal("particles/dust.pfx"), Gdx.files.internal("particles"));
     }
     
     /**
@@ -144,6 +150,7 @@ public class BunnyHead extends AbstractGameObject
                 setFeatherPowerup(false);
             }
         }
+        dustParticles.update(deltaTime);
     }
     
     /**
@@ -156,6 +163,11 @@ public class BunnyHead extends AbstractGameObject
         {
         case GROUNDED:
             jumpState = JUMP_STATE.FALLING;
+            if(velocity.x!=0)
+            {
+                dustParticles.setPosition(position.x +dimension.x/2, position.y);
+                dustParticles.start();
+            }
             break;
         case JUMP_RISING:
             // Keep track of jump time
@@ -180,7 +192,10 @@ public class BunnyHead extends AbstractGameObject
             }
         }
         if (jumpState != JUMP_STATE.GROUNDED)
+        {
+            dustParticles.allowCompletion();
             super.updateMotionY(deltaTime);
+        }
     }
 
     /**
@@ -190,6 +205,9 @@ public class BunnyHead extends AbstractGameObject
     public void render(SpriteBatch batch)
     {
         TextureRegion reg = null;
+        
+        //Draw Particles
+        dustParticles.draw(batch);
         
         //Apply Skin Color
         batch.setColor(CharacterSkin.values()[GamePreferences.instance.charSkin].getColor());
