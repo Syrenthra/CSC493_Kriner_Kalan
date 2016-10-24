@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.mygdx.game.Assets;
 import com.mygdx.screens.MenuScreen;
+import com.mygdx.util.AudioManager;
+import com.mygdx.util.GamePreferences;
 
 
 /**
@@ -31,6 +33,9 @@ public class CanyonBunnyMain extends Game
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		// Load Assets
 		Assets.instance.init(new AssetManager());
+		// Load preferences for audio settings and start playing music
+		GamePreferences.instance.load();
+		AudioManager.instance.play(Assets.instance.music.song01);
 		// Start game at menu screen
 		setScreen(new MenuScreen(this));
 	}

@@ -25,6 +25,7 @@ import com.mygdx.game.Assets;
 import com.mygdx.util.CharacterSkin;
 import com.mygdx.util.Constants;
 import com.mygdx.util.GamePreferences;
+import com.mygdx.util.AudioManager;
 
 /**
  * Main menu that has a play button and the options menu and a background for the game
@@ -476,6 +477,7 @@ public class MenuScreen extends AbstractGameScreen
     {
         saveSettings();
         onCancelClicked();
+        AudioManager.instance.onSettingsUpdated();
     }
     
     
@@ -487,5 +489,6 @@ public class MenuScreen extends AbstractGameScreen
         btnMenuPlay.setVisible(true);
         btnMenuOptions.setVisible(true);
         winOptions.setVisible(false);
+        AudioManager.instance.onSettingsUpdated();
     }
 }

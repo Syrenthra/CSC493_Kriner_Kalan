@@ -20,6 +20,7 @@ import com.mygdx.game.objects.Feather;
 import com.mygdx.game.objects.GoldCoin;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.util.Constants;
+import com.mygdx.util.AudioManager;
 
 /**
  * WorldController handles the running of the game and handles
@@ -149,6 +150,7 @@ public class WorldController extends InputAdapter
     private void onCollisionBunnyHeadWithGoldCoin(GoldCoin goldcoin)
     {
         goldcoin.collected = true;
+        AudioManager.instance.play(Assets.instance.sounds.pickupCoin);
         score += goldcoin.getScore();
         Gdx.app.log(TAG, "Gold Coin collected");        
     }
@@ -160,6 +162,7 @@ public class WorldController extends InputAdapter
     private void onCollisionBunnyHeadWithFeather(Feather feather)
     {
         feather.collected = true;
+        AudioManager.instance.play(Assets.instance.sounds.pickupFeather);
         score += feather.getScore();
         level.bunnyHead.setFeatherPowerup(true);
         Gdx.app.log(TAG, "Gold Coin collected");
@@ -292,6 +295,7 @@ public class WorldController extends InputAdapter
 		cameraHelper.update(deltaTime);
 		if( !isGameOver() && isPlayerInWater())
 		{
+		    AudioManager.instance.play(Assets.instance.sounds.liveLost);
 		    lives--;
 		    if(isGameOver())
 		    {
