@@ -99,11 +99,12 @@ public class AudioManager
             {
                 playingMusic.play();
             }
-            else
-            {
-                playingMusic.pause();
-            }
         }
+        else
+        {
+            playingMusic.pause();
+        }
+
     }
 
 }
