@@ -19,6 +19,7 @@ import com.mygdx.game.objects.Tank.JUMP_STATE;
 import com.mygdx.game.objects.Barrels;
 import com.mygdx.game.objects.SmallCrate;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.util.AudioManager;
 import com.mygdx.util.Constants;
 
 
@@ -152,7 +153,8 @@ public class WorldController extends InputAdapter
     {
         crate.collected = true;
         score += crate.getScore();
-        Gdx.app.log(TAG, "Gold Coin collected");        
+        Gdx.app.log(TAG, "Gold Coin collected");
+        AudioManager.instance.play(Assets.instance.sounds.pickupCrate);
     }
     
     /**
@@ -165,6 +167,7 @@ public class WorldController extends InputAdapter
         score += barrel.getScore();
         level.tank.setBarrelPowerup(true);
         Gdx.app.log(TAG, "Gold Coin collected");
+        AudioManager.instance.play(Assets.instance.sounds.pickupBarrel);
     }
     
     /**
@@ -297,6 +300,7 @@ public class WorldController extends InputAdapter
 		cameraHelper.update(deltaTime);
 		if( !isGameOver() && isPlayerInWater())
 		{
+		    AudioManager.instance.play(Assets.instance.sounds.liveLost);
 		    lives--;
 		    if(isGameOver())
 		    {

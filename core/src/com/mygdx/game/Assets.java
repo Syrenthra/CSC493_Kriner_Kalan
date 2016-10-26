@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+
 
 
 /**
@@ -28,6 +31,43 @@ public class Assets implements Disposable, AssetErrorListener
     public AssetCrate crate;
     public AssetBarrels barrels;
     public AssetLevelDecoration levelDecoration;
+    
+    public AssetSounds sounds;
+    public AssetMusic music;
+    
+    /**
+     * Stores all of the sounds for the game
+     * @author Kalan Kriner
+     */
+    public class AssetSounds
+    {
+        public final Sound jump;
+        public final Sound pickupCrate;
+        public final Sound pickupBarrel;
+        public final Sound liveLost;
+        
+        public AssetSounds(AssetManager am)
+        {
+            jump = am.get("sounds/jump.wav", Sound.class);
+            pickupCrate = am.get("sounds/pickup_crate.wav", Sound.class);
+            pickupBarrel = am.get("sounds/pickup_barrel.wav", Sound.class);
+            liveLost = am.get("sounds/live_lost.wav", Sound.class);
+        }
+    }
+    
+    /**
+     * Music class that stores the music for the game
+     * @author Kalan Kriner
+     */
+    public class AssetMusic
+    {
+        public final Music song01;
+        
+        public AssetMusic(AssetManager am)
+        {
+            song01= am.get("music/keith303_-_brand_new_highscore.mp3", Music.class);
+        }
+    }
     
     //Singleton : prevent instantiation from other classes
     private Assets() {}
@@ -79,6 +119,14 @@ public AssetFonts fonts;
         //Load texture atlas
         assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS,TextureAtlas.class);
         
+        //Load Sounds
+        assetManager.load("sounds/jump.wav", Sound.class);
+        assetManager.load("sounds/pickup_crate.wav", Sound.class);
+        assetManager.load("sounds/pickup_barrel.wav", Sound.class);
+        assetManager.load("sounds/live_lost.wav", Sound.class);
+        //Load Music
+        assetManager.load("music/keith303_-_brand_new_highscore.mp3", Music.class);
+        
         //Start Loading assets and wait until finished
         assetManager.finishLoading();
      
@@ -103,6 +151,8 @@ public AssetFonts fonts;
         crate = new AssetCrate(atlas);
         barrels= new AssetBarrels(atlas);
         levelDecoration = new AssetLevelDecoration(atlas);
+        sounds = new AssetSounds(assetManager);
+        music = new AssetMusic(assetManager);
     }
     
     

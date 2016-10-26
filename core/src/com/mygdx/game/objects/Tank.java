@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.mygdx.game.Assets;
 import com.mygdx.util.Constants;
 import com.mygdx.util.GamePreferences;
+import com.mygdx.util.AudioManager;
 import com.mygdx.util.CharacterSkin;
 
 /**
@@ -85,6 +86,7 @@ public class Tank extends AbstractGameObject
         case GROUNDED: //Character is standing on a platform
             if(jumpKeyPressed)
             {
+                AudioManager.instance.play(Assets.instance.sounds.jump);
                 //Start counting jump time from beginning
                 timeJumping = 0;
                 jumpState = JUMP_STATE.JUMP_RISING;
