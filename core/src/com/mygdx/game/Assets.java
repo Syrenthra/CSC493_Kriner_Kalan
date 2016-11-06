@@ -248,6 +248,10 @@ public class Assets implements Disposable, AssetErrorListener
         public final AtlasRegion mountainRight;
         public final AtlasRegion waterOverlay;
         
+        public final AtlasRegion carrot;
+        public final AtlasRegion goal;
+        
+        
         /**
          * Sets the texture of each object to its image from within the texture atlas
          * @param atlas
@@ -260,6 +264,8 @@ public class Assets implements Disposable, AssetErrorListener
             mountainLeft=atlas.findRegion("mountain_left");
             mountainRight=atlas.findRegion("mountain_right");
             waterOverlay=atlas.findRegion("water_overlay");
+            carrot = atlas.findRegion("carrot");
+            goal = atlas.findRegion("goal");
         }
     }
     
