@@ -16,7 +16,7 @@ import com.mygdx.util.CharacterSkin;
  */
 public class Tank extends AbstractGameObject
 {
-    public static final String Tag = Tank.class.getName();
+    public static final String TAG = Tank.class.getName();
     
     public ParticleEffect dustParticles = new ParticleEffect();
     
@@ -59,7 +59,7 @@ public class Tank extends AbstractGameObject
         // Bounding box for collision detection
         bounds.set(0,0, dimension.x, dimension.y);
         // Set physics values
-        terminalVelocity.set(3.0f, 8.0f);
+        terminalVelocity.set(6.0f, 8.0f);
         friction.set(12.0f, 0.0f);
         acceleration.set(0.0f,-25.0f);
         // View Direction
@@ -138,6 +138,13 @@ public class Tank extends AbstractGameObject
     public void update( float deltaTime)
     {
         super.update(deltaTime);
+        if (body != null)
+        {
+            Gdx.app.log(TAG, "velY: "+velocity.y+" state: "+jumpState);
+            body.setLinearVelocity(velocity);
+            position.set(body.getPosition());
+        }
+
         if(velocity.x!=0)
         {
             viewDirection = velocity.x < 0 ? VIEW_DIRECTION.LEFT : VIEW_DIRECTION.RIGHT;

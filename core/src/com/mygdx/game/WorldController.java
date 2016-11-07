@@ -16,9 +16,17 @@ import com.mygdx.screens.MenuScreen;
 import com.mygdx.game.objects.Rock;
 import com.mygdx.game.objects.Tank;
 import com.mygdx.game.objects.Tank.JUMP_STATE;
+import com.mygdx.game.objects.AbstractGameObject;
 import com.mygdx.game.objects.Barrels;
 import com.mygdx.game.objects.SmallCrate;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.util.AudioManager;
 import com.mygdx.util.Constants;
 
@@ -35,20 +43,19 @@ public class WorldController extends InputAdapter
 	
 	private Game game;
 	
-	/**
-	 * Returns from the game screen to the main menu
-	 */
-	private void backToMenu()
-	{
-	    // Switch to menu screen
-	    game.setScreen(new MenuScreen(game));
-	}
+	public Array<AbstractGameObject> objectsToRemove;
+	
 
-    public Level level;
+    private float timeLeftGameOverDelay;
+    
+	public Level level;
     public int lives;
     public float livesVisual;
     public int score;
     public float scoreVisual;
+    
+    private boolean goalReached;
+    public World b2world;
 	
 	 /**
 	 * Initializes the level with a new score, map and character
@@ -59,8 +66,100 @@ public class WorldController extends InputAdapter
        scoreVisual=score;
        level=new Level(Constants.LEVEL_01);
 	   cameraHelper.setTarget(level.tank);
+	   initPhysics();
+    }
+    
+    /**
+     * Creates the physics world for box2d
+     */
+    private void initPhysics()
+    {
+        if(b2world !=null) 
+            b2world.dispose();
+        
+        b2world = new World(new Vector2(0,-9.81f), true);
+        //Rocks
+        Vector2 origin = new Vector2();
+        for(Rock rock: level.rocks)
+        {
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.type = BodyType.KinematicBody;
+            bodyDef.position.set(rock.position);
+            Body body = b2world.createBody(bodyDef);
+            body.setUserData(rock);
+            rock.body =body;
+            PolygonShape polygonShape = new PolygonShape();
+            origin.x = rock.bounds.width / 2.0f;
+            origin.y = rock.bounds.height / 2.0f;
+            polygonShape.setAsBox(rock.bounds.width/2.0f, rock.bounds.height/2.0f, origin, 0);
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = polygonShape;
+            body.createFixture(fixtureDef);
+            polygonShape.dispose();
+        }
+        //Crates
+        origin = new Vector2();
+        for(SmallCrate crate: level.crates)
+        {
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.type = BodyType.KinematicBody;
+            bodyDef.position.set(crate.position);
+            Body body = b2world.createBody(bodyDef);
+            body.setUserData(crate);
+            crate.body =body;
+            PolygonShape polygonShape = new PolygonShape();
+            origin.x = crate.bounds.width / 2.0f;
+            origin.y = crate.bounds.height / 2.0f;
+            polygonShape.setAsBox(crate.bounds.width/2.0f, crate.bounds.height/2.0f, origin, 0);
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = polygonShape;
+            body.createFixture(fixtureDef);
+            polygonShape.dispose();
+        }
+        //Barrels
+        origin = new Vector2();
+        for(Barrels barrel: level.barrels)
+        {
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.type = BodyType.KinematicBody;
+            bodyDef.position.set(barrel.position);
+            Body body = b2world.createBody(bodyDef);
+            body.setUserData(barrel);
+            barrel.body =body;
+            PolygonShape polygonShape = new PolygonShape();
+            origin.x = barrel.bounds.width / 2.0f;
+            origin.y = barrel.bounds.height / 2.0f;
+            polygonShape.setAsBox(barrel.bounds.width/2.0f, barrel.bounds.height/2.0f, origin, 0);
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = polygonShape;
+            body.createFixture(fixtureDef);
+            polygonShape.dispose();
+        }
+        
+        //PLayer
+        Tank tank = level.tank;
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.position.set(tank.position);
+        bodyDef.fixedRotation = true;
+
+        Body body = b2world.createBody(bodyDef);
+        body.setType(BodyType.DynamicBody);
+        body.setGravityScale(0.0f);
+        body.setUserData(tank);
+        tank.body = body;
+
+        PolygonShape polygonShape = new PolygonShape();
+        origin.x = (tank.bounds.width) / 2.0f;
+        origin.y = (tank.bounds.height) / 2.0f;
+        polygonShape.setAsBox((tank.bounds.width) / 2.0f, (tank.bounds.height) / 2.0f, origin, 0);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        body.createFixture(fixtureDef);
+        polygonShape.dispose();
 
     }
+
 	
 	/**
 	 * Constructor that just calls the initialize method
@@ -81,10 +180,9 @@ public class WorldController extends InputAdapter
        lives= Constants.LIVES_START;
 	   livesVisual=lives;
        timeLeftGameOverDelay =0;
+       objectsToRemove = new Array<AbstractGameObject>();
        initLevel();
 	}
-
-	private float timeLeftGameOverDelay;
 	
 	/**
 	 * Checks the lives left
@@ -103,6 +201,15 @@ public class WorldController extends InputAdapter
 	{
 	    return level.tank.position.y <-5;
 	}
+	  
+    /**
+     * Returns from the game screen to the main menu
+     */
+    private void backToMenu()
+    {
+        // Switch to menu screen
+        game.setScreen(new MenuScreen(game));
+    }
 	   
     //Rectangles for collision detection
     private Rectangle r1 = new Rectangle();
@@ -173,45 +280,45 @@ public class WorldController extends InputAdapter
     /**
      * Tests collisions with every piece of game object that can be hit
      */
-    private void testCollisions()
-    {
-        r1.set(level.tank.position.x, level.tank.position.y, 
-                level.tank.bounds.width, level.tank.bounds.height);
-        
-        // Test collision: Tank <-> Rocks
-        for(Rock rock: level.rocks)
-        {
-            r2.set(rock.position.x, rock.position.y, rock.bounds.width, rock.bounds.height);
-            if(!r1.overlaps(r2)) continue;
-            
-            onCollisionTankWithRock(rock);
-            // IMPORTANT: must do all collisions for valid edge testing on rocks
-        }
-        
-        //Test collision : Tank <-> Crates
-        for(SmallCrate crate: level.crates)
-        {
-            if(crate.collected) continue;
-            
-            r2.set(crate.position.x, crate.position.y, crate.bounds.width, crate.bounds.height);
-            if(!r1.overlaps(r2)) continue;
-            
-            onCollisionTankWithCrate(crate);
-            break;
-        }
-        
-        //Test collision : Tank <-> Barrel
-        for(Barrels barrel: level.barrels)
-        {
-            if(barrel.collected) continue;
-            
-            r2.set(barrel.position.x, barrel.position.y, barrel.bounds.width, barrel.bounds.height);
-            if(!r1.overlaps(r2)) continue;
-            
-            onCollisionTankWithBarrel(barrel);
-            break;
-        }
-    }
+//    private void testCollisions()
+//    {
+//        r1.set(level.tank.position.x, level.tank.position.y, 
+//                level.tank.bounds.width, level.tank.bounds.height);
+//        
+//        // Test collision: Tank <-> Rocks
+//        for(Rock rock: level.rocks)
+//        {
+//            r2.set(rock.position.x, rock.position.y, rock.bounds.width, rock.bounds.height);
+//            if(!r1.overlaps(r2)) continue;
+//            
+//            onCollisionTankWithRock(rock);
+//            // IMPORTANT: must do all collisions for valid edge testing on rocks
+//        }
+//        
+//        //Test collision : Tank <-> Crates
+//        for(SmallCrate crate: level.crates)
+//        {
+//            if(crate.collected) continue;
+//            
+//            r2.set(crate.position.x, crate.position.y, crate.bounds.width, crate.bounds.height);
+//            if(!r1.overlaps(r2)) continue;
+//            
+//            onCollisionTankWithCrate(crate);
+//            break;
+//        }
+//        
+//        //Test collision : Tank <-> Barrel
+//        for(Barrels barrel: level.barrels)
+//        {
+//            if(barrel.collected) continue;
+//            
+//            r2.set(barrel.position.x, barrel.position.y, barrel.bounds.width, barrel.bounds.height);
+//            if(!r1.overlaps(r2)) continue;
+//            
+//            onCollisionTankWithBarrel(barrel);
+//            break;
+//        }
+//    }
     
     /**
      * Handles player movement and jumping
@@ -239,7 +346,7 @@ public class WorldController extends InputAdapter
                 }
             }
             
-            //Bunny Jump
+            //Tank Jump
             if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE))
             {
                 level.tank.setJumping(true);
@@ -281,6 +388,34 @@ public class WorldController extends InputAdapter
 	 */
 	public void update (float deltaTime) 
 	{
+	    //Removes all objects that need to be removed
+	    if (objectsToRemove.size > 0)
+        {
+            for (AbstractGameObject obj : objectsToRemove)
+            {
+                if (obj instanceof SmallCrate)
+                {
+                    int index = level.crates.indexOf((SmallCrate) obj, true);
+                    if (index != -1)
+                    {
+                        level.crates.removeIndex(index);
+                        b2world.destroyBody(obj.body);
+                    }
+                }
+                else if (obj instanceof Barrels)
+                {
+                    int index = level.barrels.indexOf((Barrels) obj, true);
+                    if (index != -1)
+                    {
+                        level.crates.removeIndex(index);
+                        b2world.destroyBody(obj.body);
+                    }
+                }
+            }
+            objectsToRemove.removeRange(0, objectsToRemove.size - 1);
+        }
+
+	    //Continues the updating of the game
 		handleDebugInput(deltaTime);
 		if(isGameOver())
 		{
@@ -289,14 +424,14 @@ public class WorldController extends InputAdapter
 	 	    {
 		        backToMenu();
 		    }
-
 		}
 		else
 		{
 		    handleInputGame(deltaTime);
 		}
+	    b2world.step(deltaTime, 8, 3);  // Tell the Box2D world to update.
 		level.update(deltaTime);
-		testCollisions();
+		//testCollisions();
 		cameraHelper.update(deltaTime);
 		if( !isGameOver() && isPlayerInWater())
 		{
@@ -390,5 +525,16 @@ public class WorldController extends InputAdapter
 		    backToMenu();
 		}
 		return false;
+	}
+
+
+
+	/**
+	 * Adds to the list of objects needing to be removed
+	 * @param obj object that is to be removed
+	 */
+	public void flagForRemoval(AbstractGameObject obj)
+	{
+	    objectsToRemove.add(obj);
 	}
 }

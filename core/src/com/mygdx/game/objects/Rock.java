@@ -125,9 +125,14 @@ public class Rock extends AbstractGameObject
         {
             floatCycleTimeLeft=FLOAT_CYCLE_TIME;
             floatingDownwards =!floatingDownwards;
-            floatTargetPosition.y += FLOAT_AMPLITUDE * (floatingDownwards ? -1:1);
+            body.setLinearVelocity(0,FLOAT_AMPLITUDE * (floatingDownwards ? -1:1));
+        }
+        else
+        {
+            body.setLinearVelocity(body.getLinearVelocity().scl(0.98f));
         }
         position.lerp(floatTargetPosition, deltaTime);
+
     }
 
 
