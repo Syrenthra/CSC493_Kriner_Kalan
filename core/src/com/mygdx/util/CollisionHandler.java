@@ -42,7 +42,7 @@ public class CollisionHandler implements ContactListener
 
         //Gdx.app.log("CollisionHandler-begin A", "begin");
 
-       // processContact(contact);
+        processContact(contact);
 
         ContactListener listener = getListener(fixtureA.getFilterData().categoryBits, fixtureB.getFilterData().categoryBits);
         if (listener != null)
@@ -58,7 +58,7 @@ public class CollisionHandler implements ContactListener
         Fixture fixtureB = contact.getFixtureB();
 
        // Gdx.app.log("CollisionHandler-end A", "end");
-        processContact(contact);
+        //processContact(contact);
 
         // Gdx.app.log("CollisionHandler-end A", fixtureA.getBody().getLinearVelocity().x+" : "+fixtureA.getBody().getLinearVelocity().y);
         // Gdx.app.log("CollisionHandler-end B", fixtureB.getBody().getLinearVelocity().x+" : "+fixtureB.getBody().getLinearVelocity().y);
@@ -120,6 +120,7 @@ public class CollisionHandler implements ContactListener
         Fixture fixtureB = contact.getFixtureB();
         AbstractGameObject objA = (AbstractGameObject)fixtureA.getBody().getUserData();
         AbstractGameObject objB = (AbstractGameObject)fixtureB.getBody().getUserData();
+        //Gdx.app.log("handler","Collided with rock");
 
         if (objA instanceof Tank)
         {
@@ -133,30 +134,25 @@ public class CollisionHandler implements ContactListener
 
     private void processPlayerContact(Fixture playerFixture, Fixture objFixture)
     {
+        //Starts the dust particles and resets the jump for the player
     	if (objFixture.getBody().getUserData() instanceof Rock)
     	{
     		Tank player = (Tank)playerFixture.getBody().getUserData();
-    	    player.acceleration.y = 0;
-    	    player.velocity.y = 0;
-    	    player.jumpState = JUMP_STATE.GROUNDED;
-    	    playerFixture.getBody().setLinearVelocity(player.velocity);
+    		player.dustParticles.setPosition(player.position.x + player.dimension.x /2, player.position.y);
+    		player.dustParticles.start();
+    		player.resetJump();
     	    
     	}
+    	//Flags the crate for removal
     	else if (objFixture.getBody().getUserData() instanceof SmallCrate)
     	{
-    		AudioManager.instance.play(Assets.instance.sounds.pickupCrate);
-
     		SmallCrate crate = (SmallCrate)objFixture.getBody().getUserData();
-            world.score+=crate.getScore();
     		world.flagForRemoval(crate);
     	}
+    	//Flags the barrel for removal
     	else if (objFixture.getBody().getUserData() instanceof Barrels)
         {
-            
-            AudioManager.instance.play(Assets.instance.sounds.pickupBarrel);
-
-            SmallCrate barrel = (SmallCrate)objFixture.getBody().getUserData();
-            world.score+=barrel.getScore();
+            Barrels barrel = (Barrels)objFixture.getBody().getUserData();
             world.flagForRemoval(barrel);
         }
     }

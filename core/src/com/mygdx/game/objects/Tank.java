@@ -20,7 +20,7 @@ public class Tank extends AbstractGameObject
     
     public ParticleEffect dustParticles = new ParticleEffect();
     
-    private final float JUMP_TIME_MAX = 0.3f;
+    private final float JUMP_TIME_MAX = 0.1f;
     private final float JUMP_TIME_MIN = 0.1f;
     private final float JUMP_TIME_OFFSET_FLYING = JUMP_TIME_MAX - 0.018f;
     
@@ -48,7 +48,7 @@ public class Tank extends AbstractGameObject
     }
     
     /**
-     * Sets the bunny head image, dimensions and the physics information
+     * Sets the character image, dimensions and the physics information
      */
     public void init()
     {
@@ -59,7 +59,7 @@ public class Tank extends AbstractGameObject
         // Bounding box for collision detection
         bounds.set(0,0, dimension.x, dimension.y);
         // Set physics values
-        terminalVelocity.set(6.0f, 8.0f);
+        terminalVelocity.set(3.5f, 7.0f);
         friction.set(12.0f, 0.0f);
         acceleration.set(0.0f,-25.0f);
         // View Direction
@@ -76,29 +76,37 @@ public class Tank extends AbstractGameObject
     }
     
     /**
-     * Sets the state of the character of grounded, falling, powerup falling or rising
+     * Updates the player to jump if pressed
      * @param jumpKeyPressed Tells if the jump key was pressed
+     * @param deltaTime to know how long the key was pressed for
      */
-    public void setJumping(boolean jumpKeyPressed)
+    public void setJumping(boolean jumpKeyPressed,float deltaTime)
     {
-        switch(jumpState)
+        if(jumpKeyPressed)
         {
-        case GROUNDED: //Character is standing on a platform
-            if(jumpKeyPressed)
+            dustParticles.allowCompletion();
+            // Keep track of jump time
+            timeJumping += deltaTime;
+            //Jump time left?
+            if(timeJumping <= JUMP_TIME_MAX)
             {
-                AudioManager.instance.play(Assets.instance.sounds.jump);
-                //Start counting jump time from beginning
-                timeJumping = 0;
-                jumpState = JUMP_STATE.JUMP_RISING;
+                //Still Jumping
+                velocity.y=terminalVelocity.y;
+                body.setLinearVelocity(velocity);
+                position.set(body.getPosition());
+                if(hasBarrelPowerup)
+                {
+                    velocity.y=velocity.y;
+                }
             }
-            break;
-        case JUMP_RISING: //Rising in the air
-            if (!jumpKeyPressed)
-                jumpState = JUMP_STATE.JUMP_FALLING;
-            break;
-        case FALLING: //Falling down
-        case JUMP_FALLING: //Falling down after jump
-            break;
+        }
+    }
+    
+    public void resetJump()
+    {
+        if(timeJumping>0)
+        {
+            timeJumping=0;
         }
     }
     
@@ -140,7 +148,7 @@ public class Tank extends AbstractGameObject
         super.update(deltaTime);
         if (body != null)
         {
-            Gdx.app.log(TAG, "velY: "+velocity.y+" state: "+jumpState);
+            //Gdx.app.log(TAG, "velY: "+velocity.y+" state: "+jumpState);
             body.setLinearVelocity(velocity);
             position.set(body.getPosition());
         }
@@ -148,8 +156,8 @@ public class Tank extends AbstractGameObject
         if(velocity.x!=0)
         {
             viewDirection = velocity.x < 0 ? VIEW_DIRECTION.LEFT : VIEW_DIRECTION.RIGHT;
+                dustParticles.start();
         }
-        
         if(timeLeftBarrelPowerup > 0)
         {
             timeLeftBarrelPowerup -= deltaTime;
@@ -160,62 +168,10 @@ public class Tank extends AbstractGameObject
                 setBarrelPowerup(false);
             }
         }
+        dustParticles.setPosition(position.x + dimension.x /2, position.y);
         dustParticles.update(deltaTime);
     }
     
-    /**
-     * Different actions done for the y motion depending on the state the character is in.
-     */
-    @Override
-    protected void updateMotionY(float deltaTime)
-    {
-        switch(jumpState)
-        {
-        case GROUNDED:
-            jumpState = JUMP_STATE.FALLING;
-            if(velocity.x !=0)
-            {
-                dustParticles.setPosition(position.x + dimension.x /2, position.y);
-                dustParticles.start();
-            }
-            break;
-        case JUMP_RISING:
-            // Keep track of jump time
-            timeJumping += deltaTime;
-            //Jump time left?
-            if(timeJumping <= JUMP_TIME_MAX)
-            {
-                //Still Jumping
-                velocity.y = terminalVelocity.y;
-                if(hasBarrelPowerup)
-                {
-                    velocity.y=velocity.y;
-                }
-            }
-            break;
-        case FALLING:
-            break;
-        case JUMP_FALLING:
-            // Add delta time to track jump time
-            timeJumping += deltaTime;
-            // Jump to minimal height if jump key was pressed too short
-            if(timeJumping>0 && timeJumping <= JUMP_TIME_MIN)
-            {
-                // Still jumping
-                velocity.y = terminalVelocity.y;
-                if(hasBarrelPowerup)
-                {
-                    velocity.y=velocity.y;
-                }
-            }
-        }
-        if (jumpState != JUMP_STATE.GROUNDED)
-        {
-            dustParticles.allowCompletion();
-            super.updateMotionY(deltaTime);
-        }
-    }
-
     /**
      * Draws the character normally, unless the powerup was picked up then a special color is used.
      */

@@ -28,6 +28,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.util.AudioManager;
+import com.mygdx.util.CollisionHandler;
 import com.mygdx.util.Constants;
 
 
@@ -78,6 +79,7 @@ public class WorldController extends InputAdapter
             b2world.dispose();
         
         b2world = new World(new Vector2(0,-9.81f), true);
+        b2world.setContactListener(new CollisionHandler(this));
         //Rocks
         Vector2 origin = new Vector2();
         for(Rock rock: level.rocks)
@@ -136,7 +138,7 @@ public class WorldController extends InputAdapter
             polygonShape.dispose();
         }
         
-        //PLayer
+        //Player
         Tank tank = level.tank;
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(tank.position);
@@ -210,47 +212,6 @@ public class WorldController extends InputAdapter
         // Switch to menu screen
         game.setScreen(new MenuScreen(game));
     }
-	   
-    //Rectangles for collision detection
-    private Rectangle r1 = new Rectangle();
-    private Rectangle r2 = new Rectangle();
-	
-    /**
-     * Checks collisions between the player character and the ground to see where the character should be placed 
-     * @param rock ground piece to check collision against
-     */
-    private void onCollisionTankWithRock(Rock rock)
-    {
-        Tank tank = level.tank;
-        float heightDifference = Math.abs(tank.position.y - (rock.position.y +rock.bounds.height));
-        if(heightDifference > 0.25f)
-        {
-            boolean hitRightEdge =tank.position.x > (rock.position.x + rock.bounds.width/2);
-            if(hitRightEdge)
-            {
-                tank.position.x = rock.position.x + rock.bounds.width;
-            }
-            else 
-            {
-                tank.position.x = rock.position.x - tank.bounds.width;
-            }
-            return;
-        }
-        
-        switch (tank.jumpState)
-        {
-        case GROUNDED:
-            break;
-        case FALLING:
-        case JUMP_FALLING:
-            tank.position.y = rock.position.y + tank.bounds.height + tank.origin.y;
-            tank.jumpState = JUMP_STATE.GROUNDED;
-            break;
-        case JUMP_RISING:
-            tank.position.y = rock.position.y + tank.bounds.height + tank.origin.y;
-            break;
-        }
-    }
     
     /**
      * Handles the collision between the character and a score piece 
@@ -260,6 +221,7 @@ public class WorldController extends InputAdapter
     {
         crate.collected = true;
         score += crate.getScore();
+        b2world.destroyBody(crate.body);
         Gdx.app.log(TAG, "Gold Coin collected");
         AudioManager.instance.play(Assets.instance.sounds.pickupCrate);
     }
@@ -273,53 +235,11 @@ public class WorldController extends InputAdapter
         barrel.collected = true;
         score += barrel.getScore();
         level.tank.setBarrelPowerup(true);
+        b2world.destroyBody(barrel.body);
         Gdx.app.log(TAG, "Gold Coin collected");
-        AudioManager.instance.play(Assets.instance.sounds.pickupBarrel);
+        AudioManager.instance.play(Assets.instance.sounds.pickupBarrel,1.5f);
     }
-    
-    /**
-     * Tests collisions with every piece of game object that can be hit
-     */
-//    private void testCollisions()
-//    {
-//        r1.set(level.tank.position.x, level.tank.position.y, 
-//                level.tank.bounds.width, level.tank.bounds.height);
-//        
-//        // Test collision: Tank <-> Rocks
-//        for(Rock rock: level.rocks)
-//        {
-//            r2.set(rock.position.x, rock.position.y, rock.bounds.width, rock.bounds.height);
-//            if(!r1.overlaps(r2)) continue;
-//            
-//            onCollisionTankWithRock(rock);
-//            // IMPORTANT: must do all collisions for valid edge testing on rocks
-//        }
-//        
-//        //Test collision : Tank <-> Crates
-//        for(SmallCrate crate: level.crates)
-//        {
-//            if(crate.collected) continue;
-//            
-//            r2.set(crate.position.x, crate.position.y, crate.bounds.width, crate.bounds.height);
-//            if(!r1.overlaps(r2)) continue;
-//            
-//            onCollisionTankWithCrate(crate);
-//            break;
-//        }
-//        
-//        //Test collision : Tank <-> Barrel
-//        for(Barrels barrel: level.barrels)
-//        {
-//            if(barrel.collected) continue;
-//            
-//            r2.set(barrel.position.x, barrel.position.y, barrel.bounds.width, barrel.bounds.height);
-//            if(!r1.overlaps(r2)) continue;
-//            
-//            onCollisionTankWithBarrel(barrel);
-//            break;
-//        }
-//    }
-    
+ 
     /**
      * Handles player movement and jumping
      * @param deltaTime time since last update
@@ -349,41 +269,17 @@ public class WorldController extends InputAdapter
             //Tank Jump
             if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE))
             {
-                level.tank.setJumping(true);
+                level.tank.setJumping(true,deltaTime);
             }
             else
             {
-                level.tank.setJumping(false);
+                level.tank.setJumping(false,deltaTime);
             }
         }
     }
 
-
-	
 	/**
-	 * Creates the image the sprites will use which is a square with an X through it
-	 * @param width of the square
-	 * @param height of the square
-	 * @return the Pixmap of the image that will be made into a texture
-	 */
-	private Pixmap createProceduralPixmap(int width, int height)
-	{
-		Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
-		// Fill square with red color at 50% opacity
-		pixmap.setColor(1, 0, 0, 0.5f);
-		pixmap.fill();
-		// Draw a yellow-colored X shape on square
-		pixmap.setColor(1, 1, 0,1);
-		pixmap.drawLine(0, 0, width, height);
-		pixmap.drawLine(width, 0, 0, height);
-		// Draw cyan-colored border around square
-		pixmap.setColor(0,1,1,1);
-		pixmap.drawRectangle(0, 0, width, height);
-		return pixmap;
-	}
-	
-	/**
-	 * Updates different classes with delta time
+	 * Updates different classes with delta time and removes collectables that were hit
 	 * @param deltaTime the time between updates
 	 */
 	public void update (float deltaTime) 
@@ -395,21 +291,11 @@ public class WorldController extends InputAdapter
             {
                 if (obj instanceof SmallCrate)
                 {
-                    int index = level.crates.indexOf((SmallCrate) obj, true);
-                    if (index != -1)
-                    {
-                        level.crates.removeIndex(index);
-                        b2world.destroyBody(obj.body);
-                    }
+                    onCollisionTankWithCrate((SmallCrate)obj);
                 }
                 else if (obj instanceof Barrels)
                 {
-                    int index = level.barrels.indexOf((Barrels) obj, true);
-                    if (index != -1)
-                    {
-                        level.crates.removeIndex(index);
-                        b2world.destroyBody(obj.body);
-                    }
+                    onCollisionTankWithBarrel((Barrels)obj);
                 }
             }
             objectsToRemove.removeRange(0, objectsToRemove.size - 1);
@@ -526,8 +412,6 @@ public class WorldController extends InputAdapter
 		}
 		return false;
 	}
-
-
 
 	/**
 	 * Adds to the list of objects needing to be removed
