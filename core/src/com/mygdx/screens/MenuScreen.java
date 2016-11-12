@@ -21,6 +21,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.math.Interpolation;
 import com.mygdx.game.Assets;
 import com.mygdx.util.CharacterSkin;
 import com.mygdx.util.Constants;
@@ -191,10 +195,23 @@ public class MenuScreen extends AbstractGameScreen
         // + Coins
         imgCoins = new Image(skinCanyonBunny, "coins");
         layer.addActor(imgCoins);
+        imgCoins.setOrigin(imgCoins.getWidth()/2, imgCoins.getHeight()/2);
+        imgCoins.addAction(sequence(
+                moveTo(135,-20),
+                scaleTo(0,0),
+                fadeOut(0),
+                delay(2.5f),
+                parallel(moveBy(0, 100, 0.5f, Interpolation.swingOut), scaleTo(1.0f, 1.0f, 0.25f, Interpolation.linear)),
+                alpha(1.0f, 0.5f)));
         // + Bunny
         imgBunny = new Image(skinCanyonBunny, "bunny");
         layer.addActor(imgBunny);
-        imgBunny.setPosition(355, 40);
+        imgBunny.addAction(sequence(
+                moveTo(655, 510),
+                delay(4.0f),
+                moveBy(-70, -100, 0.5f, Interpolation.fade),
+                moveBy(-100, -50, 0.5f, Interpolation.fade),
+                moveBy(-150, -300, 1.0f, Interpolation.fade)));
         return layer;
     }
     
@@ -264,9 +281,8 @@ public class MenuScreen extends AbstractGameScreen
     private void onOptionsClicked()
     {
         loadSettings();
-        btnMenuPlay.setVisible(false);
-        btnMenuOptions.setVisible(false);
-        winOptions.setVisible(true);
+        showMenuButtons(false);
+        showOptionsWindow(true, true);
     }
     
     /**
@@ -288,7 +304,7 @@ public class MenuScreen extends AbstractGameScreen
         // Make Options window slightly transparent
         winOptions.setColor(1, 1, 1, 0.8f);
         // Hide options window by default
-        winOptions.setVisible(false);
+        showOptionsWindow(false, false);
         if(debugEnabled) 
             winOptions.debug();
         // Let TableLayout recalculate widget sizes and positions
@@ -486,9 +502,59 @@ public class MenuScreen extends AbstractGameScreen
      */
     private void onCancelClicked()
     {
-        btnMenuPlay.setVisible(true);
-        btnMenuOptions.setVisible(true);
-        winOptions.setVisible(false);
+        showMenuButtons(true);
+        showOptionsWindow(false, false);
         AudioManager.instance.onSettingsUpdated();
+    }
+    
+    /**
+     * Gives an animated sense to the menu buttons
+     * @param visible if the buttons are visible or not
+     */
+    private void showMenuButtons(boolean visible)
+    {
+        float moveDuration =1.0f;
+        Interpolation moveEasing = Interpolation.swing;
+        float delayOptionsButton = 0.25f;
+        
+        float moveX = 300 * (visible ? -1 : 1);
+        float moveY = 0 * (visible ? -1 : 1);
+        final Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+        btnMenuPlay.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
+        
+        btnMenuOptions.addAction(sequence(
+                delay(delayOptionsButton),
+                moveBy(moveX, moveY, moveDuration, moveEasing)
+                ));
+        SequenceAction seq = sequence();
+        if(visible)
+        {
+            seq.addAction(delay(delayOptionsButton + moveDuration));
+            seq.addAction(run(new Runnable()
+                    {
+                        public void run()
+                        {
+                            btnMenuPlay.setTouchable(touchEnabled);
+                            btnMenuOptions.setTouchable(touchEnabled);
+                        }
+                    }));
+            stage.addAction(seq);
+        }
+    }
+    
+    /**
+     * animates the option window
+     * @param visible if the window is enabled
+     * @param animated if it is to be animated
+     */
+    private void showOptionsWindow(boolean visible, boolean animated)
+    {
+        float alphaTo = visible ? 0.8f : 0.0f;
+        float duration = animated ? 1.0f : 0.0f;
+        Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+        winOptions.addAction(sequence(
+                touchable(touchEnabled),
+                alpha(alphaTo, duration)
+                ));
     }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 /**
  * Holds all the common functionalities and attributes between all of the game objects
@@ -28,6 +29,9 @@ public abstract class AbstractGameObject
     
     public Body body;
     
+    public float stateTime;
+    public Animation animation;
+    
     public AbstractGameObject()
     {
         position = new Vector2();
@@ -42,12 +46,19 @@ public abstract class AbstractGameObject
         bounds = new Rectangle();
     }
     
+    public void setAnimation(Animation animation)
+    {
+        this.animation = animation;
+        stateTime=0;
+    }
+    
     /**
      * Updates the motion of the object
      * @param deltaTime time since last update
      */
     public void update(float deltaTime)
     {
+        stateTime+=deltaTime;
         if(body==null)
         {
             updateMotionX(deltaTime);
