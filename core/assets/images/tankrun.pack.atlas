@@ -1,103 +1,131 @@
 
 tankrun.pack.png
-size: 256,256
+size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 Barrels
   rotate: false
-  xy: 22, 214
+  xy: 620, 432
   size: 16, 25
   orig: 16, 25
   offset: 0, 0
   index: -1
 Basic_Ground_CornerL_Pixel
   rotate: false
-  xy: 148, 191
+  xy: 211, 108
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Basic_Ground_CornerR_Pixel
   rotate: false
-  xy: 80, 207
+  xy: 518, 263
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Basic_Ground_CornerR_Pixel - Copy
   rotate: false
-  xy: 80, 207
+  xy: 518, 263
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Basic_Ground_Filler_Pixel
   rotate: false
-  xy: 114, 207
+  xy: 552, 348
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Basic_Ground_Top_Pixel
   rotate: false
-  xy: 198, 191
+  xy: 704, 462
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 SmallCrate
   rotate: false
-  xy: 2, 221
+  xy: 2, 2
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 fog
   rotate: false
-  xy: 2, 61
+  xy: 518, 459
   size: 184, 51
   orig: 184, 51
   offset: 0, 0
   index: -1
 lava_overlay
   rotate: false
-  xy: 222, 29
+  xy: 518, 297
   size: 32, 160
   orig: 32, 160
   offset: 0, 0
   index: -1
 mountain
   rotate: false
-  xy: 2, 2
+  xy: 2, 99
   size: 207, 57
   orig: 207, 57
   offset: 0, 0
   index: -1
 tank
   rotate: false
-  xy: 40, 209
-  size: 38, 30
-  orig: 38, 30
+  xy: 2, 335
+  size: 256, 175
+  orig: 256, 175
   offset: 0, 0
   index: -1
+tank_right
+  rotate: false
+  xy: 2, 335
+  size: 256, 175
+  orig: 256, 175
+  offset: 0, 0
+  index: 1
+tank_right
+  rotate: false
+  xy: 2, 158
+  size: 256, 175
+  orig: 256, 175
+  offset: 0, 0
+  index: 2
+tank_right
+  rotate: false
+  xy: 260, 335
+  size: 256, 175
+  orig: 256, 175
+  offset: 0, 0
+  index: 3
+tank_right
+  rotate: false
+  xy: 260, 158
+  size: 256, 175
+  orig: 256, 175
+  offset: 0, 0
+  index: 4
 whitecloud01
   rotate: false
-  xy: 2, 147
+  xy: 84, 37
   size: 68, 60
   orig: 68, 60
   offset: 0, 0
   index: -1
 whitecloud02
   rotate: false
-  xy: 140, 114
+  xy: 2, 22
   size: 80, 75
   orig: 80, 75
   offset: 0, 0
   index: -1
 whitecloud03
   rotate: false
-  xy: 72, 130
+  xy: 552, 382
   size: 66, 75
   orig: 66, 75
   offset: 0, 0

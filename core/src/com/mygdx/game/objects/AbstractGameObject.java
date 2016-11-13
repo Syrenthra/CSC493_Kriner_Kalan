@@ -1,5 +1,6 @@
 package com.mygdx.game.objects;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -28,6 +29,9 @@ public abstract class AbstractGameObject
     
     public Body body;
     
+    public float stateTime;
+    public Animation animation;
+    
     public AbstractGameObject()
     {
         position = new Vector2();
@@ -48,6 +52,7 @@ public abstract class AbstractGameObject
      */
     public void update(float deltaTime)
     {
+        stateTime+= deltaTime;
         updateMotionX(deltaTime);
         updateMotionY(deltaTime);
         if (body == null)
@@ -119,6 +124,16 @@ public abstract class AbstractGameObject
         velocity.y +=acceleration.y * deltaTime;
         //Make sure object's velocity does not exceed the positive or negative terminal velocity
         velocity.y = MathUtils.clamp(velocity.y, -terminalVelocity.y, terminalVelocity.y);
+    }
+    
+    /**
+     * Sets the current animation
+     * @param animation to be set
+     */
+    public void setAnimation(Animation animation)
+    {
+        this.animation= animation;
+        stateTime=0;
     }
 
 }

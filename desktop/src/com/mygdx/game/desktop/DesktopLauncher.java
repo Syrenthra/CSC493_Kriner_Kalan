@@ -3,7 +3,6 @@ package com.mygdx.game.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.game.CanyonBunnyMain;
-import com.mygdx.game.KrinerGdxGame;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 
@@ -24,7 +23,7 @@ public class DesktopLauncher
             settings.duplicatePadding=false;
             settings.debug= drawDebugOutline;
             TexturePacker.process(settings, "assets-raw/images", "../core/assets/images","tankrun.pack");
-            TexturePacker.process(settings, "assets-raw/images-ui", "../core/assets/images","canyonbunnyrun-ui.pack");
+            //TexturePacker.process(settings, "assets-raw/images-ui", "../core/assets/images","canyonbunnyrun-ui.pack");
         }
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title= "CanyonBunny";

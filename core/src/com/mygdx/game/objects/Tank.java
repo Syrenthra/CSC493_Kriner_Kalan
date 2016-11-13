@@ -3,6 +3,7 @@ package com.mygdx.game.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.mygdx.game.Assets;
 import com.mygdx.util.Constants;
@@ -34,7 +35,9 @@ public class Tank extends AbstractGameObject
         GROUNDED, FALLING, JUMP_RISING, JUMP_FALLING
     }
 
-    private TextureRegion regHead;
+    private TextureRegion animPause;
+    private boolean stopped;
+    private Animation animRight;
     
     public VIEW_DIRECTION viewDirection;
     public float timeJumping;
@@ -53,7 +56,10 @@ public class Tank extends AbstractGameObject
     public void init()
     {
         dimension.set(1,1);
-        regHead= Assets.instance.tank.tank;
+        animRight=Assets.instance.tank.animRight;
+        stopped=false;
+        
+        setAnimation(animRight);
         // Center image on game object
         origin.set(dimension.x/2, dimension.y/2);
         // Bounding box for collision detection
@@ -153,10 +159,19 @@ public class Tank extends AbstractGameObject
             position.set(body.getPosition());
         }
 
-        if(velocity.x!=0)
+        if(body.getLinearVelocity().x!=0)
         {
-            viewDirection = velocity.x < 0 ? VIEW_DIRECTION.LEFT : VIEW_DIRECTION.RIGHT;
-                dustParticles.start();
+            viewDirection = body.getLinearVelocity().x < 0 ? VIEW_DIRECTION.LEFT : VIEW_DIRECTION.RIGHT;
+            dustParticles.start();
+            stopped=false;
+        }
+        //If the tank is stopped, set a paused animation
+        else
+        {
+            //If the tank has been paused, we don't get a new frame
+            if(stopped!=true)
+                animPause=animation.getKeyFrame(stateTime);
+            stopped=true;
         }
         if(timeLeftBarrelPowerup > 0)
         {
@@ -194,7 +209,14 @@ public class Tank extends AbstractGameObject
         }
         
         //Draw image
-        reg= regHead;
+        if(stopped)
+        {
+            reg=animPause;
+        }
+        else
+        {
+            reg= animation.getKeyFrame(stateTime, true);
+        }
         batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
                 scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
                 viewDirection == VIEW_DIRECTION.LEFT,false);

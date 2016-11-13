@@ -5,11 +5,13 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.util.Constants;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -186,9 +188,17 @@ public AssetFonts fonts;
     public class AssetTank
     {
         public final AtlasRegion tank;
+        
+        public final Animation animRight;
+        
         public AssetTank(TextureAtlas atlas)
         {
             tank=atlas.findRegion("tank");
+            
+            Array<AtlasRegion> regions =null;
+            //Animation: Tank right
+            regions= atlas.findRegions("tank_right");
+            animRight = new Animation(1.0f/16.0f, regions, Animation.PlayMode.LOOP);
         }
     }
     
