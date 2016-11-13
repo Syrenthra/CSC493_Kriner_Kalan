@@ -46,6 +46,10 @@ public abstract class AbstractGameObject
         bounds = new Rectangle();
     }
     
+    /**
+     * sets the current animation
+     * @param animation to be set to
+     */
     public void setAnimation(Animation animation)
     {
         this.animation = animation;
