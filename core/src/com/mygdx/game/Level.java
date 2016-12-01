@@ -11,6 +11,7 @@ import com.mygdx.game.objects.Rock;
 import com.mygdx.game.objects.LavaOverlay;
 import com.mygdx.game.objects.Tank;
 import com.mygdx.game.objects.Barrels;
+import com.mygdx.game.objects.Bombs;
 import com.mygdx.game.objects.SmallCrate;
 
 
@@ -73,6 +74,7 @@ public class Level
     public Array<SmallCrate> crates;
     public Array<Barrels> barrels;
     public Array<Rock> rocks;
+    public Array<Bombs>bombs;
 
     
     //Decoration
@@ -97,6 +99,7 @@ public class Level
         rocks= new Array<Rock>();
         crates = new Array<SmallCrate>();
         barrels = new Array<Barrels>();
+        bombs = new Array<Bombs>();
         
         // Load image file that represents the level data
         Pixmap pixmap =new Pixmap(Gdx.files.internal(filename));
@@ -213,6 +216,9 @@ public class Level
         //Draw Feathers
         for(Barrels feather:barrels)
             feather.render(batch);
+        //Draw bombs
+        for(Bombs bomb: bombs)
+            bomb.render(batch);
         //Draw Player Character
         tank.render(batch);
         //Draw Water Overlay
@@ -234,6 +240,8 @@ public class Level
             goldCoin.update(deltaTime);
         for(Barrels feather: barrels)
             feather.update(deltaTime);
+        for(Bombs bomb: bombs)
+            bomb.update(deltaTime);
         clouds.update(deltaTime);
     }
 

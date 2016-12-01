@@ -26,7 +26,7 @@ public class LavaOverlay extends AbstractGameObject
      */
     private void init()
     {
-        dimension.set(length*10,3);
+        dimension.set(length*10,3.3f);
         
         regWaterOverlay=Assets.instance.levelDecoration.lavaOverlay;
         

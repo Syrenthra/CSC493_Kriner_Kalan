@@ -32,6 +32,7 @@ public class Assets implements Disposable, AssetErrorListener
     public AssetGround ground;
     public AssetCrate crate;
     public AssetBarrels barrels;
+    public AssetBomb bomb;
     public AssetLevelDecoration levelDecoration;
     
     public AssetSounds sounds;
@@ -153,6 +154,7 @@ public AssetFonts fonts;
         crate = new AssetCrate(atlas);
         barrels= new AssetBarrels(atlas);
         levelDecoration = new AssetLevelDecoration(atlas);
+        bomb = new AssetBomb(atlas);
         sounds = new AssetSounds(assetManager);
         music = new AssetMusic(assetManager);
     }
@@ -188,7 +190,6 @@ public AssetFonts fonts;
     public class AssetTank
     {
         public final AtlasRegion tank;
-        
         public final Animation animRight;
         
         public AssetTank(TextureAtlas atlas)
@@ -273,6 +274,24 @@ public AssetFonts fonts;
             cloud03= atlas.findRegion("whitecloud03");
             mountain=atlas.findRegion("mountain");
             lavaOverlay=atlas.findRegion("lava_overlay");
+        }
+    }
+    
+    public class AssetBomb
+    {
+        public final Animation animExplosion;
+        public final Animation bomb;
+        
+        public AssetBomb(TextureAtlas atlas)
+        {
+            Array<AtlasRegion> regions =null;
+            //Animation: bomb
+            regions= atlas.findRegions("bomb");
+            bomb= new Animation(1.0f/10.f,regions,Animation.PlayMode.LOOP);
+            
+            //Animation: Explosion
+            regions= atlas.findRegions("exp");
+            animExplosion = new Animation(1.0f/16.0f, regions, Animation.PlayMode.NORMAL);
         }
     }
 }

@@ -44,5 +44,11 @@ public class Constants
 
 	//File for storing game preferences
 	public static final String PREFERENCES = "canyonbunny.prefs";
+	
+	//Maximum number of bombs to spawn
+	public static final int BOMBS_SPAWN_MAX = 5;
+	
+	//Spawn radius for carrots
+	public static final float BOMBS_SPAWN_RADIUS= 2.5f;
 
 }

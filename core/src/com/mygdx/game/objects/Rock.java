@@ -33,7 +33,7 @@ public class Rock extends AbstractGameObject
      */
     private void init()
     {
-        dimension.set(1,1.5f);
+        dimension.set(1.1f,1.5f);
         
         regEdge=Assets.instance.ground.edgeL;
         regMiddle=Assets.instance.ground.top;

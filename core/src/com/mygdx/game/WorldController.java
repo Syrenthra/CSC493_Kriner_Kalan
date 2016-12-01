@@ -1,25 +1,19 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.Game;
 import com.mygdx.screens.MenuScreen;
 import com.mygdx.game.objects.Rock;
 import com.mygdx.game.objects.Tank;
-import com.mygdx.game.objects.Tank.JUMP_STATE;
 import com.mygdx.game.objects.AbstractGameObject;
 import com.mygdx.game.objects.Barrels;
+import com.mygdx.game.objects.Bombs;
 import com.mygdx.game.objects.SmallCrate;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -96,6 +90,8 @@ public class WorldController extends InputAdapter
             polygonShape.setAsBox(rock.bounds.width/2.0f, rock.bounds.height/2.0f, origin, 0);
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = polygonShape;
+            fixtureDef.friction=0.80f;
+            //Gdx.app.log("Rock Friction", ": " + fixtureDef.friction);
             body.createFixture(fixtureDef);
             polygonShape.dispose();
         }
@@ -157,9 +153,14 @@ public class WorldController extends InputAdapter
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
+        fixtureDef.friction=0.1f;
+        fixtureDef.density=10f;
         body.createFixture(fixtureDef);
         polygonShape.dispose();
 
+        Vector2 centerPos = new Vector2(level.tank.position);
+        centerPos.x += level.tank.bounds.width;
+        spawnBombs(centerPos, Constants.BOMBS_SPAWN_MAX, Constants.BOMBS_SPAWN_RADIUS);
     }
 
 	
@@ -199,9 +200,9 @@ public class WorldController extends InputAdapter
 	 * Checks if player is under the water
 	 * @return true if under water
 	 */
-	public boolean isPlayerInWater()
+	public boolean isObjectInWater(AbstractGameObject obj)
 	{
-	    return level.tank.position.y <-5;
+	    return obj.position.y <-5;
 	}
 	  
     /**
@@ -238,6 +239,45 @@ public class WorldController extends InputAdapter
         b2world.destroyBody(barrel.body);
         Gdx.app.log(TAG, "Gold Coin collected");
         AudioManager.instance.play(Assets.instance.sounds.pickupBarrel,1.5f);
+    }
+    
+    /**
+     * Handles the collision between the player and a bomb
+     * @param bomb the piece hit
+     */
+    private void onCollisionTankWithBomb(Bombs bomb)
+    {
+        bomb.explode();
+        score += bomb.getScore();        
+        AudioManager.instance.play(Assets.instance.sounds.pickupBarrel,1.5f);
+    }
+    
+    /**
+     * Resets the bomb to be above the character somewhere
+     * @param bomb the bomb to be reset
+     */
+    private void bombReset(Bombs bomb)
+    {
+        bomb.body.setType(BodyType.DynamicBody);
+        Vector2 centerPos = new Vector2(level.tank.position);
+        centerPos.x += level.tank.bounds.width;
+        float radius =Constants.BOMBS_SPAWN_RADIUS;
+        float x= MathUtils.random(-radius, radius);
+        float y= MathUtils.random(10f, 15f);
+        centerPos.add(x, y);
+        bomb.body.setTransform(centerPos,0);
+        bomb.reset=false;
+        bomb.exploded=false;
+    }
+    
+    /**
+     * If a bomb is under water, it is to be reset
+     * @param bomb
+     */
+    private void bombUnderWater(Bombs bomb)
+    {
+        Gdx.app.log("Bomb check","Bomb is under water");
+        bomb.reset = true;
     }
  
     /**
@@ -297,12 +337,20 @@ public class WorldController extends InputAdapter
                 {
                     onCollisionTankWithBarrel((Barrels)obj);
                 }
+                else if (obj instanceof Bombs)
+                {
+                    if(isObjectInWater((Bombs)obj))
+                        bombUnderWater((Bombs)obj);
+                    else
+                        onCollisionTankWithBomb((Bombs)obj);
+                }
             }
             objectsToRemove.removeRange(0, objectsToRemove.size - 1);
         }
 
 	    //Continues the updating of the game
 		handleDebugInput(deltaTime);
+
 		if(isGameOver())
 		{
 		    timeLeftGameOverDelay -= deltaTime;
@@ -319,7 +367,7 @@ public class WorldController extends InputAdapter
 		level.update(deltaTime);
 		//testCollisions();
 		cameraHelper.update(deltaTime);
-		if( !isGameOver() && isPlayerInWater())
+		if( !isGameOver() && isObjectInWater(level.tank))
 		{
 		    AudioManager.instance.play(Assets.instance.sounds.liveLost);
 		    lives--;
@@ -337,8 +385,24 @@ public class WorldController extends InputAdapter
             livesVisual = Math.max(lives,  livesVisual - 1 * deltaTime);
         }
         if(scoreVisual < score)
-        {
+        {   
             scoreVisual = Math.min(score,  scoreVisual + 250 * deltaTime);
+        }
+        else if(scoreVisual > score)
+        {   
+            scoreVisual = Math.min(scoreVisual,  score - 250 * deltaTime);
+        }
+
+        for(Bombs bomb: level.bombs)
+        {
+            if(bomb.reset)
+            {
+                bombReset(bomb);
+            }
+            else if(isObjectInWater(bomb))
+            {
+                flagForRemoval(bomb);
+            }
         }
 
 	}
@@ -420,5 +484,46 @@ public class WorldController extends InputAdapter
 	public void flagForRemoval(AbstractGameObject obj)
 	{
 	    objectsToRemove.add(obj);
+	}
+	
+	/**
+	 * Spawns bomb items around the character
+	 * @param pos position of the character
+	 * @param numBombs number of bombs to be spawned
+	 * @param radius around the character where they will spawn
+	 */
+	private void spawnBombs(Vector2 pos, int numBombs, float radius)
+	{
+	    //Creates bombs with bod2d body
+	    for(int i=0; i<numBombs;i++)
+	    {
+	        float bombShapeScale=0.5f;
+	        Bombs bomb = new Bombs();
+	        //Calculates random spawn position
+	        float x= MathUtils.random(-radius, radius);
+	        float y= MathUtils.random(10f, 15f);
+	        
+	        BodyDef bodyDef = new BodyDef();
+	        bodyDef.position.set(pos);
+	        bodyDef.position.add(x, y);
+	        Body body = b2world.createBody(bodyDef);
+	        body.setType(BodyType.DynamicBody);
+	        body.setUserData(bomb);
+	        bomb.body= body;
+	        //Creates rectangular bounding box around the bomb for collision detection
+	        PolygonShape polygonShape = new PolygonShape();
+	        float halfWidth = bomb.bounds.width / 2.0f;
+            float halfHeight = bomb.bounds.height / 2.0f;
+	        polygonShape.setAsBox(bomb.bounds.width/2.0f, bomb.bounds.height/2.0f);
+	        //Set physics attributes
+	        FixtureDef fixtureDef= new FixtureDef();
+	        fixtureDef.shape= polygonShape;
+	        fixtureDef.density=30;
+	        fixtureDef.restitution=0f;
+	        fixtureDef.friction=1.0f;
+	        body.createFixture(fixtureDef);
+	        polygonShape.dispose();
+	        level.bombs.add(bomb); 
+	        }
 	}
 }

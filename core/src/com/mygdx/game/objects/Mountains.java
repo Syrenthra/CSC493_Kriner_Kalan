@@ -32,7 +32,7 @@ public class Mountains extends AbstractGameObject
      */
     private void init()
     {
-        dimension.set(10,2);
+        dimension.set(10,3);
         
         regMountainLeft=Assets.instance.levelDecoration.mountain;
         regMountainRight=Assets.instance.levelDecoration.mountain;
@@ -98,12 +98,12 @@ public class Mountains extends AbstractGameObject
     public void render(SpriteBatch batch)
     {
         //Distant mountains (dark gray)
-        drawMountain(batch,0.5f,0.2f,0.5f,0.8f);
+        drawMountain(batch,0.75f,0.1f,0.5f,0.8f);
         //Distant mountains (gray)
-        drawMountain(batch,0.25f,0.1f,0.25f,0.5f);
+        drawMountain(batch,0.5f,0.05f,0.25f,0.5f);
         //Distant mountains(light gray)
         drawMountain(batch,0.0f,0.0f,0.9f,0.3f);
-        
+            
     }
     
 

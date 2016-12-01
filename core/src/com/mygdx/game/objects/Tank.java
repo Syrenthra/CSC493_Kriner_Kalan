@@ -63,9 +63,9 @@ public class Tank extends AbstractGameObject
         // Center image on game object
         origin.set(dimension.x/2, dimension.y/2);
         // Bounding box for collision detection
-        bounds.set(0,0, dimension.x, dimension.y);
+        bounds.set(0,0, dimension.x, dimension.y-0.1f);
         // Set physics values
-        terminalVelocity.set(3.5f, 7.0f);
+        terminalVelocity.set(4.5f, 7.0f);
         friction.set(12.0f, 0.0f);
         acceleration.set(0.0f,-25.0f);
         // View Direction

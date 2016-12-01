@@ -10,7 +10,7 @@ import com.mygdx.game.Assets;
  */
 public class Barrels extends AbstractGameObject
 {
-private TextureRegion regFeather;
+    private TextureRegion regBarrel;
     
     public boolean collected;
     
@@ -26,7 +26,7 @@ private TextureRegion regFeather;
     {
         dimension.set(0.5f,0.5f);
         
-        regFeather = Assets.instance.barrels.barrels;
+        regBarrel = Assets.instance.barrels.barrels;
         
         // Set Bounding box for collision detection
         bounds.set(0,0, dimension.x, dimension.y);
@@ -42,7 +42,7 @@ private TextureRegion regFeather;
         if (collected) return;
         
         TextureRegion reg= null;
-        reg= regFeather;
+        reg= regBarrel;
         batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
                 rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false,false);
     }

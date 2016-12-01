@@ -1,131 +1,229 @@
 
 tankrun.pack.png
-size: 1024,512
+size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 Barrels
   rotate: false
-  xy: 620, 432
+  xy: 480, 344
   size: 16, 25
   orig: 16, 25
   offset: 0, 0
   index: -1
 Basic_Ground_CornerL_Pixel
   rotate: false
-  xy: 211, 108
+  xy: 854, 776
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Basic_Ground_CornerR_Pixel
   rotate: false
-  xy: 518, 263
+  xy: 200, 459
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Basic_Ground_CornerR_Pixel - Copy
   rotate: false
-  xy: 518, 263
+  xy: 200, 459
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Basic_Ground_Filler_Pixel
   rotate: false
-  xy: 552, 348
+  xy: 2, 63
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Basic_Ground_Top_Pixel
   rotate: false
-  xy: 704, 462
+  xy: 607, 380
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 SmallCrate
   rotate: false
-  xy: 2, 2
+  xy: 458, 827
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
+bomb
+  rotate: false
+  xy: 914, 828
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+exp
+  rotate: false
+  xy: 260, 649
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 1
+exp
+  rotate: false
+  xy: 2, 295
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 2
+exp
+  rotate: false
+  xy: 2, 97
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 3
+exp
+  rotate: false
+  xy: 518, 826
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 4
+exp
+  rotate: false
+  xy: 518, 826
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 5
+exp
+  rotate: false
+  xy: 716, 826
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 6
+exp
+  rotate: false
+  xy: 260, 451
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 7
+exp
+  rotate: false
+  xy: 458, 628
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 8
+exp
+  rotate: false
+  xy: 656, 628
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 9
+exp
+  rotate: false
+  xy: 458, 430
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 10
+exp
+  rotate: false
+  xy: 656, 430
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 11
+exp
+  rotate: false
+  xy: 200, 253
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 12
+exp
+  rotate: false
+  xy: 200, 55
+  size: 196, 196
+  orig: 196, 196
+  offset: 0, 0
+  index: 13
 fog
   rotate: false
-  xy: 518, 459
+  xy: 2, 2
   size: 184, 51
   orig: 184, 51
   offset: 0, 0
   index: -1
 lava_overlay
   rotate: false
-  xy: 518, 297
+  xy: 914, 862
   size: 32, 160
   orig: 32, 160
   offset: 0, 0
   index: -1
 mountain
   rotate: false
-  xy: 2, 99
+  xy: 398, 371
   size: 207, 57
   orig: 207, 57
   offset: 0, 0
   index: -1
 tank
   rotate: false
-  xy: 2, 335
+  xy: 2, 847
   size: 256, 175
   orig: 256, 175
   offset: 0, 0
   index: -1
 tank_right
   rotate: false
-  xy: 2, 335
+  xy: 2, 847
   size: 256, 175
   orig: 256, 175
   offset: 0, 0
   index: 1
 tank_right
   rotate: false
-  xy: 2, 158
+  xy: 2, 670
   size: 256, 175
   orig: 256, 175
   offset: 0, 0
   index: 2
 tank_right
   rotate: false
-  xy: 260, 335
+  xy: 260, 847
   size: 256, 175
   orig: 256, 175
   offset: 0, 0
   index: 3
 tank_right
   rotate: false
-  xy: 260, 158
+  xy: 2, 493
   size: 256, 175
   orig: 256, 175
   offset: 0, 0
   index: 4
 whitecloud01
   rotate: false
-  xy: 84, 37
+  xy: 398, 232
   size: 68, 60
   orig: 68, 60
   offset: 0, 0
   index: -1
 whitecloud02
   rotate: false
-  xy: 2, 22
+  xy: 398, 294
   size: 80, 75
   orig: 80, 75
   offset: 0, 0
   index: -1
 whitecloud03
   rotate: false
-  xy: 552, 382
+  xy: 948, 947
   size: 66, 75
   orig: 66, 75
   offset: 0, 0

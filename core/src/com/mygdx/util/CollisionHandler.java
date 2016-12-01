@@ -1,6 +1,7 @@
 package com.mygdx.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -11,6 +12,7 @@ import com.mygdx.game.WorldController;
 import com.mygdx.game.Assets;
 import com.mygdx.game.objects.AbstractGameObject;
 import com.mygdx.game.objects.Barrels;
+import com.mygdx.game.objects.Bombs;
 import com.mygdx.game.objects.SmallCrate;
 import com.mygdx.game.objects.Rock;
 import com.mygdx.game.objects.Tank;
@@ -122,18 +124,35 @@ public class CollisionHandler implements ContactListener
         AbstractGameObject objB = (AbstractGameObject)fixtureB.getBody().getUserData();
         //Gdx.app.log("handler","Collided with rock");
 
+        if (objA instanceof Bombs)
+        {
+            processInteractionContact(fixtureA, fixtureB);
+        }
+        else if (objB instanceof Bombs)
+        {
+            processInteractionContact(fixtureB, fixtureA);
+        }
+        
         if (objA instanceof Tank)
         {
-        	processPlayerContact(fixtureA, fixtureB);
+        	processInteractionContact(fixtureA, fixtureB);
         }
         else if (objB instanceof Tank)
         {
-        	processPlayerContact(fixtureB, fixtureA);
+        	processInteractionContact(fixtureB, fixtureA);
         }
     }
 
-    private void processPlayerContact(Fixture playerFixture, Fixture objFixture)
+    private void processInteractionContact(Fixture playerFixture, Fixture objFixture)
     {
+        //Checks if a bomb has touched the ground
+        if (playerFixture.getBody().getUserData() instanceof Bombs)
+        {
+            final Bombs bomb = (Bombs)playerFixture.getBody().getUserData();
+            bomb.explode();
+            return;
+        }
+        
         //Starts the dust particles and resets the jump for the player
     	if (objFixture.getBody().getUserData() instanceof Rock)
     	{
@@ -154,6 +173,12 @@ public class CollisionHandler implements ContactListener
         {
             Barrels barrel = (Barrels)objFixture.getBody().getUserData();
             world.flagForRemoval(barrel);
+        }
+    	//Flags the barrel for removal
+        else if (objFixture.getBody().getUserData() instanceof Bombs)
+        {
+            Bombs bomb = (Bombs)objFixture.getBody().getUserData();
+            world.flagForRemoval(bomb);
         }
     }
 
