@@ -262,6 +262,7 @@ public AssetFonts fonts;
         public final AtlasRegion cloud03;
         public final AtlasRegion mountain;
         public final AtlasRegion lavaOverlay;
+        public final AtlasRegion goal;
         
         /**
          * Sets the decorations to their correct images
@@ -274,6 +275,7 @@ public AssetFonts fonts;
             cloud03= atlas.findRegion("whitecloud03");
             mountain=atlas.findRegion("mountain");
             lavaOverlay=atlas.findRegion("lava_overlay");
+            goal=atlas.findRegion("goal");
         }
     }
     

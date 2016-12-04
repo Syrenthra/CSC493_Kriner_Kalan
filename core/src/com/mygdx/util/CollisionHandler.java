@@ -13,6 +13,7 @@ import com.mygdx.game.Assets;
 import com.mygdx.game.objects.AbstractGameObject;
 import com.mygdx.game.objects.Barrels;
 import com.mygdx.game.objects.Bombs;
+import com.mygdx.game.objects.Goal;
 import com.mygdx.game.objects.SmallCrate;
 import com.mygdx.game.objects.Rock;
 import com.mygdx.game.objects.Tank;
@@ -179,6 +180,11 @@ public class CollisionHandler implements ContactListener
         {
             Bombs bomb = (Bombs)objFixture.getBody().getUserData();
             world.flagForRemoval(bomb);
+        }
+        else if (objFixture.getBody().getUserData() instanceof Goal)
+        {
+            Goal goal = (Goal)objFixture.getBody().getUserData();
+            world.onCollisionWithGoal();
         }
     }
 

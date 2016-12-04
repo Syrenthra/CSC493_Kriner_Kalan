@@ -44,10 +44,13 @@ public class WorldController extends InputAdapter
     private float timeLeftGameOverDelay;
     
 	public Level level;
+	public int currentLevel;
     public int lives;
     public float livesVisual;
     public int score;
     public float scoreVisual;
+    
+    private Array<String>levels;
     
     private boolean goalReached;
     public World b2world;
@@ -57,10 +60,16 @@ public class WorldController extends InputAdapter
 	 */
     private void initLevel()
     {
-       score=0;
-       scoreVisual=score;
-       level=new Level(Constants.LEVEL_01);
+        //Only resets score if resetting the first level
+        if(currentLevel==1)
+        {
+            score=0;
+            scoreVisual=score;
+        }
+
+       level=new Level(levels.get(currentLevel-1));
 	   cameraHelper.setTarget(level.tank);
+	   goalReached=false;
 	   initPhysics();
     }
     
@@ -133,30 +142,46 @@ public class WorldController extends InputAdapter
             body.createFixture(fixtureDef);
             polygonShape.dispose();
         }
+        //Goal
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.KinematicBody;
+        bodyDef.position.set(level.goal.position);
+        Body body = b2world.createBody(bodyDef);
+        body.setUserData(level.goal);
+        level.goal.body =body;
+        PolygonShape polygonShape = new PolygonShape();
+        origin.x = level.goal.bounds.width / 2.0f;
+        origin.y = level.goal.bounds.height / 2.0f;
+        polygonShape.setAsBox((level.goal.bounds.width/2.0f)-.5f, level.goal.bounds.height/2.0f);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.isSensor = true;
+        body.createFixture(fixtureDef);
+        polygonShape.dispose();
         
         //Player
         Tank tank = level.tank;
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(tank.position);
-        bodyDef.fixedRotation = true;
+        BodyDef bodyDef2 = new BodyDef();
+        bodyDef2.position.set(tank.position);
+        bodyDef2.fixedRotation = true;
 
-        Body body = b2world.createBody(bodyDef);
-        body.setType(BodyType.DynamicBody);
-        body.setGravityScale(0.0f);
-        body.setUserData(tank);
-        tank.body = body;
+        Body body2 = b2world.createBody(bodyDef2);
+        body2.setType(BodyType.DynamicBody);
+        body2.setGravityScale(0.0f);
+        body2.setUserData(tank);
+        tank.body = body2;
 
-        PolygonShape polygonShape = new PolygonShape();
+        PolygonShape polygonShape2 = new PolygonShape();
         origin.x = (tank.bounds.width) / 2.0f;
         origin.y = (tank.bounds.height) / 2.0f;
-        polygonShape.setAsBox((tank.bounds.width) / 2.0f, (tank.bounds.height) / 2.0f, origin, 0);
+        polygonShape2.setAsBox((tank.bounds.width) / 2.0f, (tank.bounds.height) / 2.0f, origin, 0);
 
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = polygonShape;
-        fixtureDef.friction=0.1f;
-        fixtureDef.density=10f;
-        body.createFixture(fixtureDef);
-        polygonShape.dispose();
+        FixtureDef fixtureDef2 = new FixtureDef();
+        fixtureDef2.shape = polygonShape2;
+        fixtureDef2.friction=0.1f;
+        fixtureDef2.density=10f;
+        body2.createFixture(fixtureDef2);
+        polygonShape2.dispose();
 
         Vector2 centerPos = new Vector2(level.tank.position);
         centerPos.x += level.tank.bounds.width;
@@ -184,6 +209,12 @@ public class WorldController extends InputAdapter
 	   livesVisual=lives;
        timeLeftGameOverDelay =0;
        objectsToRemove = new Array<AbstractGameObject>();
+       levels= new Array<String>();
+       levels.add(Constants.LEVEL_01);
+       levels.add(Constants.LEVEL_02);
+       currentLevel=1;
+       score=0;
+       scoreVisual=score;
        initLevel();
 	}
 	
@@ -266,8 +297,13 @@ public class WorldController extends InputAdapter
         float y= MathUtils.random(10f, 15f);
         centerPos.add(x, y);
         bomb.body.setTransform(centerPos,0);
+        /*
+         * Can't get the bomb animation to show only once its been reset fully
+         */
+        
         bomb.reset=false;
         bomb.exploded=false;
+        bomb.resetAnimation();
     }
     
     /**
@@ -278,6 +314,16 @@ public class WorldController extends InputAdapter
     {
         Gdx.app.log("Bomb check","Bomb is under water");
         bomb.reset = true;
+    }
+    
+    public void onCollisionWithGoal()
+    {
+        if(!goalReached)
+        {
+            score+=1000;
+            timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
+        }
+        goalReached=true;
     }
  
     /**
@@ -350,7 +396,27 @@ public class WorldController extends InputAdapter
 
 	    //Continues the updating of the game
 		handleDebugInput(deltaTime);
-
+		
+		if(goalReached)
+        {
+            timeLeftGameOverDelay -= deltaTime;
+            Gdx.app.log("Goal reached","counting down time");
+            if(timeLeftGameOverDelay <0)
+            {
+                if(levels.size>currentLevel)
+                {
+                    currentLevel++;
+                    initLevel();
+                }
+                else
+                {
+                    backToMenu();
+                }
+            }
+            return;
+            
+        }
+		
 		if(isGameOver())
 		{
 		    timeLeftGameOverDelay -= deltaTime;
@@ -367,6 +433,26 @@ public class WorldController extends InputAdapter
 		level.update(deltaTime);
 		//testCollisions();
 		cameraHelper.update(deltaTime);
+		
+		//Checks if the end of the level has been reached.
+//		if(goalReached)
+//        {
+//            timeLeftGameOverDelay -= deltaTime;
+//            Gdx.app.log("Goal reached","counting down time");
+//            if(timeLeftGameOverDelay <0)
+//            {
+//                if(levels.size>currentLevel)
+//                {
+//                    currentLevel++;
+//                    initLevel();
+//                }
+//                else
+//                {
+//                    backToMenu();
+//                }
+//            }
+//            
+//        }
 		if( !isGameOver() && isObjectInWater(level.tank))
 		{
 		    AudioManager.instance.play(Assets.instance.sounds.liveLost);
@@ -508,12 +594,11 @@ public class WorldController extends InputAdapter
 	        bodyDef.position.add(x, y);
 	        Body body = b2world.createBody(bodyDef);
 	        body.setType(BodyType.DynamicBody);
+	        body.setGravityScale(0.18f);
 	        body.setUserData(bomb);
 	        bomb.body= body;
 	        //Creates rectangular bounding box around the bomb for collision detection
 	        PolygonShape polygonShape = new PolygonShape();
-	        float halfWidth = bomb.bounds.width / 2.0f;
-            float halfHeight = bomb.bounds.height / 2.0f;
 	        polygonShape.setAsBox(bomb.bounds.width/2.0f, bomb.bounds.height/2.0f);
 	        //Set physics attributes
 	        FixtureDef fixtureDef= new FixtureDef();

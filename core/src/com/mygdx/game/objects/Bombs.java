@@ -40,14 +40,20 @@ public class Bombs extends AbstractGameObject
     }
     
     /**
+     * Used to reset the image to the bomb when it is reset
+     */
+    public void resetAnimation()
+    {
+        setAnimation(animBomb);
+    }
+    
+    /**
      * Draws the bomb until it explodes
      */
     public void render(SpriteBatch batch)
     {
         TextureRegion reg= null;
         //When the bomb has finished its explosion, it is reset to above the character
-        if(reset)
-            return;
         
         //If the bomb has exploded from contact, the animation is set
         if (exploded)
@@ -57,9 +63,13 @@ public class Bombs extends AbstractGameObject
             {
                 reg=animExplosion.getKeyFrame(stateTime);
                 reset=true;
-                return;
+                //return;
             }
             
+        }
+        if(reset)
+        {
+            return;
         }
         
         reg=animation.getKeyFrame(stateTime);

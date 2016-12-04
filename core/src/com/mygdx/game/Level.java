@@ -13,6 +13,7 @@ import com.mygdx.game.objects.Tank;
 import com.mygdx.game.objects.Barrels;
 import com.mygdx.game.objects.Bombs;
 import com.mygdx.game.objects.SmallCrate;
+import com.mygdx.game.objects.Goal;
 
 
 /**
@@ -33,7 +34,8 @@ public class Level
         ROCK(0,255,0), //Green
         PLAYER_SPAWNPOINT(255,255,255), //White
         ITEM_BARREL(255,0,255), // Purple
-        ITEM_CRATE(255,255,0); //Yellow
+        ITEM_CRATE(255,255,0), //Yellow
+        GOAL(255,0,0);
         
         private int color;
         
@@ -61,7 +63,7 @@ public class Level
         /**
          * @return color value
          */
-        public int getColor()
+        public int getColor()   
         {
             return color;
         }
@@ -75,7 +77,7 @@ public class Level
     public Array<Barrels> barrels;
     public Array<Rock> rocks;
     public Array<Bombs>bombs;
-
+    public Goal goal;
     
     //Decoration
     public Clouds clouds;
@@ -170,6 +172,13 @@ public class Level
                     crates.add((SmallCrate) obj);
                 }
                 
+                else if(BLOCK_TYPE.GOAL.sameColor(currentPixel))
+                {
+                    obj = new Goal();
+                    offsetHeight = -3.0f;
+                    obj.position.set(pixelX, baseHeight + offsetHeight);
+                    goal= (Goal)obj;
+                }
                 //Unknown object/pixel color
                 else
                 {
@@ -187,7 +196,7 @@ public class Level
         
         //Decoration
         clouds= new Clouds(pixmap.getWidth());
-        clouds.position.set(0,2);
+        clouds.position.set(0,2.5f);
         mountains= new Mountains(pixmap.getWidth());
         mountains.position.set(-1,-1);
         lavaOverlay= new LavaOverlay(pixmap.getWidth());
@@ -207,6 +216,8 @@ public class Level
     {
         //Draw Mountains
         mountains.render(batch);
+        //Draw Goal
+        goal.render(batch);
         //Draw Rocks
         for(Rock rock:rocks)
             rock.render(batch);

@@ -96,8 +96,8 @@ public class Clouds extends AbstractGameObject
         //Position
         Vector2 pos = new Vector2();
         pos.x=length+10; //position after end of level
-        pos.y+=1.75; //base position
-        pos.y+=MathUtils.random(0.0f,0.2f) *(MathUtils.randomBoolean() ? 1:-1); // Random additional position
+        pos.y+=2.75; //base position
+        pos.y+=MathUtils.random(0.0f,0.3f) *(MathUtils.randomBoolean() ? 1:-1); // Random additional position
         cloud.position.set(pos);
         // Speed
         Vector2 speed = new Vector2();

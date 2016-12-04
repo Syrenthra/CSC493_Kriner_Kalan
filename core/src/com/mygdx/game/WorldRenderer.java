@@ -24,7 +24,7 @@ public class WorldRenderer implements Disposable
     private SpriteBatch batch;
     private WorldController worldController;
     
-    private static final boolean DEBUG_DRAW_BOX2D_WORLD =true;
+    private static final boolean DEBUG_DRAW_BOX2D_WORLD =false;
     private Box2DDebugRenderer b2debugRenderer;
     
     

@@ -6,7 +6,7 @@ filter: Nearest,Nearest
 repeat: none
 Barrels
   rotate: false
-  xy: 480, 344
+  xy: 520, 344
   size: 16, 25
   orig: 16, 25
   offset: 0, 0
@@ -158,6 +158,13 @@ fog
   orig: 184, 51
   offset: 0, 0
   index: -1
+goal
+  rotate: false
+  xy: 398, 321
+  size: 120, 48
+  orig: 120, 48
+  offset: 0, 0
+  index: -1
 lava_overlay
   rotate: false
   xy: 914, 862
@@ -209,14 +216,14 @@ tank_right
   index: 4
 whitecloud01
   rotate: false
-  xy: 398, 232
+  xy: 398, 182
   size: 68, 60
   orig: 68, 60
   offset: 0, 0
   index: -1
 whitecloud02
   rotate: false
-  xy: 398, 294
+  xy: 398, 244
   size: 80, 75
   orig: 80, 75
   offset: 0, 0
