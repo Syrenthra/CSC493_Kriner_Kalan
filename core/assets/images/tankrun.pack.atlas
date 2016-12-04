@@ -6,7 +6,7 @@ filter: Nearest,Nearest
 repeat: none
 Barrels
   rotate: false
-  xy: 520, 344
+  xy: 2, 70
   size: 16, 25
   orig: 16, 25
   offset: 0, 0
@@ -18,30 +18,23 @@ Basic_Ground_CornerL_Pixel
   orig: 48, 48
   offset: 0, 0
   index: -1
-Basic_Ground_CornerR_Pixel
-  rotate: false
-  xy: 200, 459
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Basic_Ground_CornerR_Pixel - Copy
-  rotate: false
-  xy: 200, 459
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Basic_Ground_Filler_Pixel
-  rotate: false
-  xy: 2, 63
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
 Basic_Ground_Top_Pixel
   rotate: false
   xy: 607, 380
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Basic_Mud_CornerL_Pixel
+  rotate: false
+  xy: 520, 321
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Basic_Mud_Top_Pixel
+  rotate: false
+  xy: 480, 271
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
@@ -55,7 +48,7 @@ SmallCrate
   index: -1
 bomb
   rotate: false
-  xy: 914, 828
+  xy: 200, 459
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

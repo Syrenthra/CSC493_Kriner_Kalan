@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Assets;
 
 /**
- * Handles the drawing of the platform of rocks with end pieces and middle pieces
+ * Abstract Rock class that will be implemented by normal ground or mud, only difference will be textures
  * 
  * @author Kalan Kriner
  */
@@ -21,30 +21,50 @@ public class Rock extends AbstractGameObject
     private float floatCycleTimeLeft;
     private boolean floatingDownwards;
     private Vector2 floatTargetPosition;
+    boolean mud;
 
     
-    public Rock()
+    public Rock(int type)
     {
-        init();
+        init(type);
     }
     
     /**
      * Sets up the basic rock dimensions and gives the rock assets
      */
-    private void init()
+    private void init(int type)
     {
         dimension.set(1.1f,1.5f);
         
-        regEdge=Assets.instance.ground.edgeL;
-        regMiddle=Assets.instance.ground.top;
-        
         //Start length of this rock
         setLength(1);
+        //Type 1 is normal ground
+        if(type==1)
+        {
+            regEdge=Assets.instance.ground.edgeLGround;
+            regMiddle=Assets.instance.ground.topGround;
+            mud=false;
+        }
+        //Type 2 is mud
+        else if(type==2)
+        {
+            regEdge=Assets.instance.ground.edgeLMud;
+            regMiddle=Assets.instance.ground.topMud;
+            mud=true;
+        }
         
         floatingDownwards = false;
         floatCycleTimeLeft = MathUtils.random(0, FLOAT_CYCLE_TIME / 2);
         floatTargetPosition = null;
 
+    }
+    
+    /**
+     * Gets if its mud
+     */
+    public boolean getMud()
+    {
+        return mud;
     }
     
     /**
@@ -134,6 +154,4 @@ public class Rock extends AbstractGameObject
         position.lerp(floatTargetPosition, deltaTime);
 
     }
-
-
 }

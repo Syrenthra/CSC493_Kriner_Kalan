@@ -31,7 +31,8 @@ public class Level
     public enum BLOCK_TYPE
     {
         EMPTY(0,0,0), //Black
-        ROCK(0,255,0), //Green
+        GROUND(0,255,0), //Green
+        MUD(0,0,255), //Blue
         PLAYER_SPAWNPOINT(255,255,255), //White
         ITEM_BARREL(255,0,255), // Purple
         ITEM_CRATE(255,255,0), //Yellow
@@ -126,12 +127,29 @@ public class Level
                     //do nothing
                 }
                 
-                //Empty space
-                else if(BLOCK_TYPE.ROCK.sameColor(currentPixel))
+                //Ground
+                else if(BLOCK_TYPE.GROUND.sameColor(currentPixel))
                 {
                     if(lastPixel != currentPixel)
                     {
-                        obj = new Rock();
+                        obj = new Rock(1);
+                        float heightIncreaseFactor = 0.25f;
+                        offsetHeight = -2.5f;
+                        obj.position.set(pixelX,baseHeight* obj.dimension.y* heightIncreaseFactor + offsetHeight);
+                        rocks.add((Rock)obj);
+                    }
+                    else
+                    {
+                        rocks.get(rocks.size-1).increaseLength(1);
+                    }
+                }
+                
+                //Mud
+                else if(BLOCK_TYPE.MUD.sameColor(currentPixel))
+                {
+                    if(lastPixel != currentPixel)
+                    {
+                        obj = new Rock(2);
                         float heightIncreaseFactor = 0.25f;
                         offsetHeight = -2.5f;
                         obj.position.set(pixelX,baseHeight* obj.dimension.y* heightIncreaseFactor + offsetHeight);

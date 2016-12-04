@@ -210,16 +210,16 @@ public AssetFonts fonts;
      */
     public class AssetGround
     {
-        public final AtlasRegion edgeL;
-        public final AtlasRegion top;
-        public final AtlasRegion filler;
-        public final AtlasRegion edgeR;
+        public final AtlasRegion edgeLGround;
+        public final AtlasRegion topGround;
+        public final AtlasRegion edgeLMud;
+        public final AtlasRegion topMud;
         public AssetGround (TextureAtlas atlas)
         {
-            edgeL = atlas.findRegion("Basic_Ground_CornerL_Pixel");
-            top= atlas.findRegion("Basic_Ground_Top_Pixel");
-            filler= atlas.findRegion("Basic_Ground_Filler_Pixel");
-            edgeR = atlas.findRegion("Basic_Ground_CornerR_Pixel");
+            edgeLGround = atlas.findRegion("Basic_Ground_CornerL_Pixel");
+            topGround= atlas.findRegion("Basic_Ground_Top_Pixel");
+            edgeLMud= atlas.findRegion("Basic_Mud_CornerL_Pixel");
+            topMud = atlas.findRegion("Basic_Mud_Top_Pixel");
         }
     }
     

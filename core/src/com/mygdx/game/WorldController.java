@@ -99,7 +99,15 @@ public class WorldController extends InputAdapter
             polygonShape.setAsBox(rock.bounds.width/2.0f, rock.bounds.height/2.0f, origin, 0);
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = polygonShape;
-            fixtureDef.friction=0.80f;
+            //Sets the friction depending on if it is mud or not
+            if(rock.getMud())
+            {
+                fixtureDef.friction=0.20f;
+            }
+            else
+            {
+                fixtureDef.friction=0.01f;
+            }
             //Gdx.app.log("Rock Friction", ": " + fixtureDef.friction);
             body.createFixture(fixtureDef);
             polygonShape.dispose();
@@ -178,7 +186,7 @@ public class WorldController extends InputAdapter
 
         FixtureDef fixtureDef2 = new FixtureDef();
         fixtureDef2.shape = polygonShape2;
-        fixtureDef2.friction=0.1f;
+        fixtureDef2.friction=1.0f;
         fixtureDef2.density=10f;
         body2.createFixture(fixtureDef2);
         polygonShape2.dispose();
