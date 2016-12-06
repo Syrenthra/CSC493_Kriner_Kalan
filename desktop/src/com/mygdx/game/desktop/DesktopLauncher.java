@@ -22,11 +22,11 @@ public class DesktopLauncher
             settings.maxHeight=1024;
             settings.duplicatePadding=false;
             settings.debug= drawDebugOutline;
-            TexturePacker.process(settings, "assets-raw/images", "../core/assets/images","tankrun.pack");
-            //TexturePacker.process(settings, "assets-raw/images-ui", "../core/assets/images","canyonbunnyrun-ui.pack");
+            //TexturePacker.process(settings, "assets-raw/images", "../core/assets/images","tankrun.pack");
+            TexturePacker.process(settings, "assets-raw/images-ui", "../core/assets/images","canyonbunny-ui.pack");
         }
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.title= "CanyonBunny";
+        config.title= "Tank Run";
         config.width =800;
         config.height= 480;
         new LwjglApplication(new CanyonBunnyMain(), config);

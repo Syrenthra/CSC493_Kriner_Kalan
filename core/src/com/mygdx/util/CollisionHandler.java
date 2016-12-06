@@ -149,7 +149,8 @@ public class CollisionHandler implements ContactListener
         //Checks if a bomb has touched the ground
         if (playerFixture.getBody().getUserData() instanceof Bombs)
         {
-            final Bombs bomb = (Bombs)playerFixture.getBody().getUserData();
+            Bombs bomb = (Bombs)playerFixture.getBody().getUserData();
+            bomb.dirtParticles.start();
             bomb.explode();
             return;
         }
@@ -183,7 +184,6 @@ public class CollisionHandler implements ContactListener
         }
         else if (objFixture.getBody().getUserData() instanceof Goal)
         {
-            Goal goal = (Goal)objFixture.getBody().getUserData();
             world.onCollisionWithGoal();
         }
     }

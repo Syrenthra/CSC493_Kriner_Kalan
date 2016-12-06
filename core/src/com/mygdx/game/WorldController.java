@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.Game;
+import com.mygdx.screens.HighScoreScreen;
 import com.mygdx.screens.MenuScreen;
 import com.mygdx.game.objects.Rock;
 import com.mygdx.game.objects.Tank;
@@ -60,12 +61,6 @@ public class WorldController extends InputAdapter
 	 */
     private void initLevel()
     {
-        //Only resets score if resetting the first level
-        if(currentLevel==1)
-        {
-            score=0;
-            scoreVisual=score;
-        }
 
        level=new Level(levels.get(currentLevel-1));
 	   cameraHelper.setTarget(level.tank);
@@ -247,10 +242,10 @@ public class WorldController extends InputAdapter
     /**
      * Returns from the game screen to the main menu
      */
-    private void backToMenu()
+    private void toHighScore()
     {
         // Switch to menu screen
-        game.setScreen(new MenuScreen(game));
+        game.setScreen((new HighScoreScreen(game, score)));
     }
     
     /**
@@ -288,7 +283,7 @@ public class WorldController extends InputAdapter
     {
         bomb.explode();
         score += bomb.getScore();        
-        AudioManager.instance.play(Assets.instance.sounds.pickupBarrel,1.5f);
+        
     }
     
     /**
@@ -418,7 +413,7 @@ public class WorldController extends InputAdapter
                 }
                 else
                 {
-                    backToMenu();
+                    toHighScore();
                 }
             }
             return;
@@ -430,7 +425,7 @@ public class WorldController extends InputAdapter
 		    timeLeftGameOverDelay -= deltaTime;
 		    if(timeLeftGameOverDelay <0)
 	 	    {
-		        backToMenu();
+		        toHighScore();
 		    }
 		}
 		else
@@ -441,26 +436,7 @@ public class WorldController extends InputAdapter
 		level.update(deltaTime);
 		//testCollisions();
 		cameraHelper.update(deltaTime);
-		
-		//Checks if the end of the level has been reached.
-//		if(goalReached)
-//        {
-//            timeLeftGameOverDelay -= deltaTime;
-//            Gdx.app.log("Goal reached","counting down time");
-//            if(timeLeftGameOverDelay <0)
-//            {
-//                if(levels.size>currentLevel)
-//                {
-//                    currentLevel++;
-//                    initLevel();
-//                }
-//                else
-//                {
-//                    backToMenu();
-//                }
-//            }
-//            
-//        }
+
 		if( !isGameOver() && isObjectInWater(level.tank))
 		{
 		    AudioManager.instance.play(Assets.instance.sounds.liveLost);
@@ -566,7 +542,7 @@ public class WorldController extends InputAdapter
 		//Back to Menu
 		else if(keycode == Keys.ESCAPE || keycode == Keys.BACK)
 		{
-		    backToMenu();
+		    toHighScore();
 		}
 		return false;
 	}
@@ -591,7 +567,6 @@ public class WorldController extends InputAdapter
 	    //Creates bombs with bod2d body
 	    for(int i=0; i<numBombs;i++)
 	    {
-	        float bombShapeScale=0.5f;
 	        Bombs bomb = new Bombs();
 	        //Calculates random spawn position
 	        float x= MathUtils.random(-radius, radius);

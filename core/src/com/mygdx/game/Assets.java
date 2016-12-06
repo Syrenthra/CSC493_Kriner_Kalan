@@ -48,6 +48,7 @@ public class Assets implements Disposable, AssetErrorListener
         public final Sound pickupCrate;
         public final Sound pickupBarrel;
         public final Sound liveLost;
+        public final Sound explosion;
         
         public AssetSounds(AssetManager am)
         {
@@ -55,6 +56,7 @@ public class Assets implements Disposable, AssetErrorListener
             pickupCrate = am.get("sounds/pickup_crate.wav", Sound.class);
             pickupBarrel = am.get("sounds/pickup_barrel.wav", Sound.class);
             liveLost = am.get("sounds/live_lost.wav", Sound.class);
+            explosion= am.get("sounds/explosion.wav",Sound.class);
         }
     }
     
@@ -127,6 +129,7 @@ public AssetFonts fonts;
         assetManager.load("sounds/pickup_crate.wav", Sound.class);
         assetManager.load("sounds/pickup_barrel.wav", Sound.class);
         assetManager.load("sounds/live_lost.wav", Sound.class);
+        assetManager.load("sounds/explosion.wav", Sound.class);
         //Load Music
         assetManager.load("music/keith303_-_brand_new_highscore.mp3", Music.class);
         
@@ -282,18 +285,23 @@ public AssetFonts fonts;
     public class AssetBomb
     {
         public final Animation animExplosion;
-        public final Animation bomb;
+        public final Animation animBomb;
+        public final Animation animPause;
         
         public AssetBomb(TextureAtlas atlas)
         {
             Array<AtlasRegion> regions =null;
             //Animation: bomb
             regions= atlas.findRegions("bomb");
-            bomb= new Animation(1.0f/10.f,regions,Animation.PlayMode.LOOP);
+            animBomb= new Animation(1.0f/10.f,regions,Animation.PlayMode.LOOP);
             
             //Animation: Explosion
             regions= atlas.findRegions("exp");
             animExplosion = new Animation(1.0f/16.0f, regions, Animation.PlayMode.NORMAL);
+            //Animation: Paused explosion
+            regions=new Array<AtlasRegion>();
+            regions.add(atlas.findRegion("exp",13));
+            animPause = new Animation(1.0f/1.0f,regions,Animation.PlayMode.LOOP);
         }
     }
 }

@@ -42,8 +42,8 @@ public class MenuScreen extends AbstractGameScreen
     private Image imgBackground;
     private Image imgLogo;
     private Image imgInfo;
-    private Image imgCoins;
-    private Image imgBunny;
+    private Image imgCrates;
+    private Image imgTank;
     private Button btnMenuPlay;
     private Button btnMenuOptions;
     
@@ -144,7 +144,7 @@ public class MenuScreen extends AbstractGameScreen
      */
     private void rebuildStage()
     {
-        skinCanyonBunny= new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI),
+        skinCanyonBunny= new Skin(Gdx.files.internal(Constants.SKIN_TANK_RUN_UI),
                 new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
         skinLibgdx = new Skin(Gdx.files.internal(Constants.SKIN_LIBGDX_UI), 
                 new TextureAtlas(Constants.TEXTURE_ATLAS_LIBGDX_UI));
@@ -189,12 +189,13 @@ public class MenuScreen extends AbstractGameScreen
     {
         Table layer = new Table();
         // + Coins
-        imgCoins = new Image(skinCanyonBunny, "coins");
-        layer.addActor(imgCoins);
+        imgCrates = new Image(skinCanyonBunny, "crates");
+        layer.addActor(imgCrates);
+        imgCrates.setPosition(370, 150);
         // + Bunny
-        imgBunny = new Image(skinCanyonBunny, "bunny");
-        layer.addActor(imgBunny);
-        imgBunny.setPosition(355, 40);
+        imgTank = new Image(skinCanyonBunny, "tank");
+        layer.addActor(imgTank);
+        imgTank.setPosition(205, 80);
         return layer;
     }
     

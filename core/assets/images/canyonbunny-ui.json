@@ -7,7 +7,7 @@
 		background: { drawable: background },
 		logo: { drawable: logo },
 		info: { drawable: info },
-		coins: { drawable: coins },
-		bunny: { drawable: bunny },
+		crates: { drawable: crates },
+		tank: { drawable: tank },
 	},
 }

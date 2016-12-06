@@ -28,7 +28,7 @@ public class Constants
 	//Location of description files for skins
 	public static final String SKIN_LIBGDX_UI = "images/uiskin.json";
 	
-	public static final String SKIN_CANYONBUNNY_UI = "images/canyonbunny-ui.json";
+	public static final String SKIN_TANK_RUN_UI = "images/canyonbunny-ui.json";
 	
 	//Location of image file for level 01
 	public static final String LEVEL_01 = "levels/level - 01.png";
